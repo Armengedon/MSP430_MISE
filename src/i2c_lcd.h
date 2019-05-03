@@ -26,7 +26,7 @@ uint8_t dades_smbus[256];
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-void i2c_lcd_init(void);
+void i2c_lcd_display_init(void);
 
 void i2c_lcd_send_string(uint8_t *buffer);
 

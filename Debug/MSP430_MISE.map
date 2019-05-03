@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker Unix v18.12.1                  
 ******************************************************************************
->> Linked Fri May  3 12:33:36 2019
+>> Linked Fri May  3 14:26:36 2019
 
 OUTPUT FILE NAME:   <MSP430_MISE.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00008212
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 000081fc
 
 
 MEMORY CONFIGURATION
@@ -20,7 +20,7 @@ MEMORY CONFIGURATION
   INFOA                 00001980   00000080  00000000  00000080  RWIX
   USBRAM                00001c00   00000800  00000000  00000800  RWIX
   RAM                   00002400   00001000  000000a6  00000f5a  RWIX
-  FLASH                 00008000   00007f80  00000262  00007d1e  RWIX
+  FLASH                 00008000   00007f80  0000025e  00007d22  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -102,25 +102,26 @@ section   page    origin      length       input sections
                   00003360    00000002     rts430x_lc_sd_eabi.lib : boot.c.obj (.stack)
                   00003362    0000009e     --HOLE--
 
-.text      0    00008000    00000250     
-                  00008000    0000007e     main.obj (.text:main)
-                  0000807e    00000072     i2c_lcd.obj (.text:_isr:USCI_B1_ISR)
-                  000080f0    0000006a     rts430x_lc_sd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
-                  0000815a    0000003e                            : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
-                  00008198    0000002c     i2c_lcd.obj (.text:i2c_lcd_init)
-                  000081c4    00000028     ucs_cfg.obj (.text:ucs_cfg_init)
-                  000081ec    00000026     i2c_lcd.obj (.text:i2c_lcd_i2c_send)
-                  00008212    0000001c     rts430x_lc_sd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs)
-                  0000822e    0000000e     i2c_lcd.obj (.text:i2c_lcd_send_cmd)
-                  0000823c    00000008     rts430x_lc_sd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
-                  00008244    00000006                            : exit.c.obj (.text:abort)
-                  0000824a    00000004                            : pre_init.c.obj (.text:_system_pre_init)
-                  0000824e    00000002                            : startup.c.obj (.text:_system_post_cinit)
+.text      0    00008000    0000024c     
+                  00008000    00000072     i2c_lcd.obj (.text:_isr:USCI_B1_ISR)
+                  00008072    0000006a     rts430x_lc_sd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
+                  000080dc    00000068     i2c_lcd.obj (.text:i2c_lcd_display_init)
+                  00008144    0000003e     rts430x_lc_sd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  00008182    0000002c     i2c_lcd.obj (.text:i2c_lcd_init)
+                  000081ae    00000028     ucs_cfg.obj (.text:ucs_cfg_init)
+                  000081d6    00000026     i2c_lcd.obj (.text:i2c_lcd_i2c_send)
+                  000081fc    0000001c     rts430x_lc_sd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs)
+                  00008218    00000012     main.obj (.text:main)
+                  0000822a    0000000e     i2c_lcd.obj (.text:i2c_lcd_send_cmd)
+                  00008238    00000008     rts430x_lc_sd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
+                  00008240    00000006                            : exit.c.obj (.text:abort)
+                  00008246    00000004                            : pre_init.c.obj (.text:_system_pre_init)
+                  0000824a    00000002                            : startup.c.obj (.text:_system_post_cinit)
 
-.cinit     0    00008250    00000012     
-                  00008250    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  00008256    00000004     (__TI_handler_table)
-                  0000825a    00000008     (__TI_cinit_table)
+.cinit     0    0000824c    00000012     
+                  0000824c    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00008252    00000004     (__TI_handler_table)
+                  00008256    00000008     (__TI_cinit_table)
 
 .binit     0    00008000    00000000     
 
@@ -209,11 +210,11 @@ MODULE SUMMARY
        Module                 code   ro data   rw data
        ------                 ----   -------   -------
     ./src/
-       i2c_lcd.obj            210    2         6      
-       main.obj               126    0         0      
+       i2c_lcd.obj            314    2         6      
        ucs_cfg.obj            40     0         0      
+       main.obj               18     0         0      
     +--+----------------------+------+---------+---------+
-       Total:                 376    2         6      
+       Total:                 372    2         6      
                                                       
     /home/premium/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/lib/rts430x_lc_sd_eabi.lib
        autoinit.c.obj         106    0         0      
@@ -250,18 +251,18 @@ MODULE SUMMARY
        Stack:                 0      0         160    
        Linker Generated:      0      18        0      
     +--+----------------------+------+---------+---------+
-       Grand Total:           592    64        166    
+       Grand Total:           588    64        166    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 0000825a records: 1, size/record: 8, table size: 8
-	.bss: load addr=00008250, load size=00000006 bytes, run addr=00002400, run size=00000006 bytes, compression=zero_init
+__TI_cinit_table @ 00008256 records: 1, size/record: 8, table size: 8
+	.bss: load addr=0000824c, load size=00000006 bytes, run addr=00002400, run size=00000006 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00008256 records: 1, size/record: 4, table size: 4
+__TI_handler_table @ 00008252 records: 1, size/record: 4, table size: 4
 	index: 0, handler: __TI_zero_init
 
 
@@ -299,7 +300,7 @@ address   name
 00000752  ADC10MEM0                              
 00000753  ADC10MEM0_H                            
 00000752  ADC10MEM0_L                            
-00008244  C$$EXIT                                
+00008240  C$$EXIT                                
 000008c0  CBCTL0                                 
 000008c1  CBCTL0_H                               
 000008c0  CBCTL0_L                               
@@ -949,18 +950,18 @@ address   name
 00000932  USBVECINT                              
 00000933  USBVECINT_H                            
 00000932  USBVECINT_L                            
-0000807e  USCI_B1_ISR                            
+00008000  USCI_B1_ISR                            
 0000015c  WDTCTL                                 
 0000015d  WDTCTL_H                               
 0000015c  WDTCTL_L                               
 00003400  __STACK_END                            
 000000a0  __STACK_SIZE                           
-0000825a  __TI_CINIT_Base                        
-00008262  __TI_CINIT_Limit                       
-00008256  __TI_Handler_Table_Base                
-0000825a  __TI_Handler_Table_Limit               
-0000823c  __TI_ISR_TRAP                          
-000080f0  __TI_auto_init_nobinit_nopinit_hold_wdt
+00008256  __TI_CINIT_Base                        
+0000825e  __TI_CINIT_Limit                       
+00008252  __TI_Handler_Table_Base                
+00008256  __TI_Handler_Table_Limit               
+00008238  __TI_ISR_TRAP                          
+00008072  __TI_auto_init_nobinit_nopinit_hold_wdt
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -986,18 +987,18 @@ address   name
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
-0000815a  __TI_zero_init_nomemset                
+00008144  __TI_zero_init_nomemset                
 ffffffff  __c_args__                             
-00008212  _c_int00_noargs                        
+000081fc  _c_int00_noargs                        
 0000fffe  _reset_vector                          
 00003360  _stack                                 
-0000824e  _system_post_cinit                     
-0000824a  _system_pre_init                       
-00008244  abort                                  
-00008198  i2c_lcd_init                           
-0000822e  i2c_lcd_send_cmd                       
-00008000  main                                   
-000081c4  ucs_cfg_init                           
+0000824a  _system_post_cinit                     
+00008246  _system_pre_init                       
+00008240  abort                                  
+000080dc  i2c_lcd_display_init                   
+0000822a  i2c_lcd_send_cmd                       
+00008218  main                                   
+000081ae  ucs_cfg_init                           
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1689,23 +1690,23 @@ address   name
 00002405  TXByteCtr                              
 00003360  _stack                                 
 00003400  __STACK_END                            
-00008000  main                                   
-0000807e  USCI_B1_ISR                            
-000080f0  __TI_auto_init_nobinit_nopinit_hold_wdt
-0000815a  __TI_zero_init_nomemset                
-00008198  i2c_lcd_init                           
-000081c4  ucs_cfg_init                           
-00008212  _c_int00_noargs                        
-0000822e  i2c_lcd_send_cmd                       
-0000823c  __TI_ISR_TRAP                          
-00008244  C$$EXIT                                
-00008244  abort                                  
-0000824a  _system_pre_init                       
-0000824e  _system_post_cinit                     
-00008256  __TI_Handler_Table_Base                
-0000825a  __TI_CINIT_Base                        
-0000825a  __TI_Handler_Table_Limit               
-00008262  __TI_CINIT_Limit                       
+00008000  USCI_B1_ISR                            
+00008072  __TI_auto_init_nobinit_nopinit_hold_wdt
+000080dc  i2c_lcd_display_init                   
+00008144  __TI_zero_init_nomemset                
+000081ae  ucs_cfg_init                           
+000081fc  _c_int00_noargs                        
+00008218  main                                   
+0000822a  i2c_lcd_send_cmd                       
+00008238  __TI_ISR_TRAP                          
+00008240  C$$EXIT                                
+00008240  abort                                  
+00008246  _system_pre_init                       
+0000824a  _system_post_cinit                     
+00008252  __TI_Handler_Table_Base                
+00008256  __TI_CINIT_Base                        
+00008256  __TI_Handler_Table_Limit               
+0000825e  __TI_CINIT_Limit                       
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             

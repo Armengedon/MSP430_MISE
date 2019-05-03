@@ -16,6 +16,15 @@
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 #define I2C_LCD_TEXT_MAX_SIZE       17           //16 + 1 byte de commandament
 #define I2C_LCD_CMD_LENGTH          2
+#define DB7                         BIT7
+#define DB6                         BIT6
+#define DB5                         BIT5
+#define DB4                         BIT4
+#define DB3                         BIT3
+#define DB2                         BIT2
+#define DB1                         BIT1
+#define DB0                         BIT0
+
 
 
 // ------------------------------------- TYPEDEFS -------------------------------------
@@ -34,7 +43,16 @@ typedef struct {
 
 static void i2c_lcd_i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades);
 
+static void i2c_lcd_init();
+
+void wait_ms(uint32_t ms);
+
 // ----------------------------------- PRIVATE METHODS --------------------------------
+
+void wait_ms(uint32_t ms) {
+    uint32_t cicles = ms * 16000;
+    for ( ; cicles != 0; --cicles);
+}
 
 static void i2c_lcd_i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades) {
     UCB1I2CSA = addr;
@@ -80,8 +98,6 @@ __interrupt void USCI_B1_ISR(void) {
     }
 }
 
-// ----------------------------------- PUBLIC METHODS ---------------------------------
-
 void i2c_lcd_init() {
     P4SEL |= BIT2 + BIT1;           // P4.1 iP4.2 com a USCI sifem server USCI B1
     UCB1CTL1 |= UCSWRST;            // Aturem el mòdul
@@ -92,6 +108,44 @@ void i2c_lcd_init() {
     UCB1BR1 = 0;
     UCB1CTL1 &= ~UCSWRST;           // Clear SW reset, resume operation
     UCB1IE |= UCTXIE | UCRXIE;      // EnableTX i RX interrupt
+}
+
+// ----------------------------------- PUBLIC METHODS ---------------------------------
+
+void i2c_lcd_display_init() {
+    i2c_lcd_init();
+
+    wait_ms(50);
+    /* repeat the function set 4 times (LCD_LM016_resum.pdf) */
+    uint8_t buffer[2];
+    buffer[0] = 0x00;
+    buffer[1] = DB5 | DB4 | DB3 | DB2 | DB0;
+    i2c_lcd_send_cmd(buffer);
+    /* wait > 4.1 mS */
+    wait_ms(5);
+    i2c_lcd_send_cmd(buffer);
+    wait_ms(1);
+    i2c_lcd_send_cmd(buffer);
+    i2c_lcd_send_cmd(buffer); //The number of display lines and character font cant be changed after this
+
+    /* Display off */
+    buffer[0] = 0x00;
+    buffer[1] = DB3;
+    i2c_lcd_send_cmd(buffer);
+    /* Display clear */
+    buffer[0] = 0x00;
+    buffer[1] = DB0;
+    i2c_lcd_send_cmd(buffer);
+    /* Display entry mode set */
+    buffer[0] = 0x00;
+    buffer[1] = DB2 | DB1;
+    i2c_lcd_send_cmd(buffer);
+
+    /*Display on */
+    buffer[0] = 0x00;
+    buffer[1] = DB3 | DB2;
+    i2c_lcd_send_cmd(buffer);
+
 }
 
 void i2c_lcd_send_string(uint8_t *buffer) {
