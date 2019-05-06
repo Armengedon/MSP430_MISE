@@ -10,6 +10,7 @@
 
 #include <msp430.h>
 #include "i2c_lcd.h"
+#include <string.h>
 
 // ------------------------------------- DEFINES --------------------------------------
 
@@ -67,31 +68,31 @@ static void i2c_lcd_i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades) {
 #pragma vector = USCI_B1_VECTOR
 __interrupt void USCI_B1_ISR(void) {
     switch (__even_in_range(UCB1IV,12)) {
-    case 0: break;
+    case 0: break;                                      // Vector 0: No interrupts
     case 2: break;
     case 4: break;
     case 6: break;
     case 8: break;
-    case 10:
-        RXByteCtr--;
+    case 10:                                            // Vector 10: RXIFG
+        RXByteCtr--;                                    // Decrement RX byte counter
         if (RXByteCtr) {
-            *PRxData++ = UCB1RXBUF;
-            if (RXByteCtr == 1) UCB1CTL1 |= UCTXSTP;
+            *PRxData++ = UCB1RXBUF;                     // Mou la dada rebuda a l’adreça PRxData
+            if (RXByteCtr == 1) UCB1CTL1 |= UCTXSTP;    // Genera I2C stop condition
         }
         else {
-            *PRxData = UCB1RXBUF;
-            __bic_SR_register_on_exit(LPM0_bits);
+            *PRxData = UCB1RXBUF;                       // Mou la dada rebuda a l’adreça PRxData
+            __bic_SR_register_on_exit(LPM0_bits);       // Exit del mode baix consum LPM0, activa la CPU
         }
         break;
-    case 12:
-        if (TXByteCtr) {
-            UCB1TXBUF = *PTxData++;
-            TXByteCtr--;
+    case 12:                                            // Vector 12: TXIFG
+        if (TXByteCtr) {                                // Check TX byte counter
+            UCB1TXBUF = *PTxData++;                     // Carrega el TX buffer amb la dada a enviar
+            TXByteCtr--;                                // Decrementa TX byte counter
         }
         else {
-            UCB1CTL1 |= UCTXSTP;
-            UCB1IFG &= ~UCTXIFG;
-            __bic_SR_register_on_exit(LPM0_bits);
+            UCB1CTL1 |= UCTXSTP;                        // I2C stop condition
+            UCB1IFG &= ~UCTXIFG;                        // Clear USCI_B1 TX int flag
+            __bic_SR_register_on_exit(LPM0_bits);       // Exit del mode baix consum LPM0, activa la CPU
         }
         break;
     default: break;
@@ -110,21 +111,22 @@ void i2c_lcd_init() {
     UCB1IE |= UCTXIE | UCRXIE;      // EnableTX i RX interrupt
 }
 
+
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
 void i2c_lcd_display_init() {
     i2c_lcd_init();
 
-    wait_ms(50);
+    wait_ms(100);
     /* repeat the function set 4 times (LCD_LM016_resum.pdf) */
     uint8_t buffer[2];
     buffer[0] = 0x00;
     buffer[1] = DB5 | DB4 | DB3 | DB2 | DB0;
     i2c_lcd_send_cmd(buffer);
     /* wait > 4.1 mS */
-    wait_ms(5);
+    wait_ms(10);
     i2c_lcd_send_cmd(buffer);
-    wait_ms(1);
+    wait_ms(5);
     i2c_lcd_send_cmd(buffer);
     i2c_lcd_send_cmd(buffer); //The number of display lines and character font cant be changed after this
 
@@ -149,7 +151,7 @@ void i2c_lcd_display_init() {
 }
 
 void i2c_lcd_send_string(uint8_t *buffer) {
-    i2c_lcd_i2c_send(0x3E, buffer, NELEMS(buffer));
+    i2c_lcd_i2c_send(0x3E, buffer, strlen(buffer));
 }
 
 void i2c_lcd_send_cmd(uint8_t *buffer) {

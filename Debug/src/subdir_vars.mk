@@ -2,6 +2,8 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
+SHELL = cmd.exe
+
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/i2c_lcd.c \
@@ -19,14 +21,14 @@ OBJS += \
 ./src/ucs_cfg.obj 
 
 OBJS__QUOTED += \
-"src/i2c_lcd.obj" \
-"src/main.obj" \
-"src/ucs_cfg.obj" 
+"src\i2c_lcd.obj" \
+"src\main.obj" \
+"src\ucs_cfg.obj" 
 
 C_DEPS__QUOTED += \
-"src/i2c_lcd.d" \
-"src/main.d" \
-"src/ucs_cfg.d" 
+"src\i2c_lcd.d" \
+"src\main.d" \
+"src\ucs_cfg.d" 
 
 C_SRCS__QUOTED += \
 "../src/i2c_lcd.c" \
