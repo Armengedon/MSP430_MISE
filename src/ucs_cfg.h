@@ -20,7 +20,6 @@
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-
 void ucs_cfg_init(void);
 
 void ucs_cfg_deinit(void);

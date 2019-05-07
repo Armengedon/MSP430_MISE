@@ -48,14 +48,23 @@ static void i2c_lcd_init();
 
 void wait_ms(uint32_t ms);
 
+void i2c_lcd_reset(void);
+
 // ----------------------------------- PRIVATE METHODS --------------------------------
+
+void i2c_lcd_reset() {
+    P6OUT |= BIT0;
+    wait_ms(20);
+    P6OUT &= ~(BIT0);
+
+}
 
 void wait_ms(uint32_t ms) {
     uint32_t cicles = ms * 16000;
     for ( ; cicles != 0; --cicles);
 }
 
-static void i2c_lcd_i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades) {
+void i2c_lcd_i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades) {
     UCB1I2CSA = addr;
     PTxData = buffer;
     TXByteCtr = n_dades;
@@ -64,6 +73,63 @@ static void i2c_lcd_i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades) {
     __no_operation();
     while(UCB1CTL1 & UCTXSTP);
 }
+
+
+void i2c_lcd_init() {
+    /* Inisialisation of reset pin */
+    P6SEL &= ~(BIT0);
+    P6DIR |= BIT0;
+    P6OUT |= BIT0;
+
+
+    P4SEL |= BIT2 + BIT1;           // P4.1 iP4.2 com a USCI sifem server USCI B1
+    UCB1CTL1 |= UCSWRST;            // Aturem el mòdul
+    //El configurem com a master, sincroni mode i2c, per defecte, estàen single-mastermode
+    UCB1CTL0 = UCMST + UCMODE_3 + UCSYNC;
+    UCB1CTL1 = UCSSEL_2 + UCSWRST;  // UseSMCLK, keepSW resetUCB1BR0 = 160;              // fSCL= SMCLK(16MHz)/160 = ~100kHzUCB1BR1 = 0;UCB1CTL1 &= ~UCSWRST;     // Clear SW reset, resume operationUCB1IE |= UCTXIE | UCRXIE; // EnableTX i RX interrup
+    UCB1BR0 = 160;                  // fSCL= SMCLK(16MHz)/160 = ~100kHz
+    UCB1BR1 = 0;
+    UCB1CTL1 &= ~UCSWRST;           // Clear SW reset, resume operation
+    UCB1IE |= UCTXIE | UCRXIE;      // EnableTX i RX interrupt
+}
+
+
+// ----------------------------------- PUBLIC METHODS ---------------------------------
+
+void i2c_lcd_display_init() {
+    i2c_lcd_init();
+
+    i2c_lcd_reset();
+    wait_ms(20);
+
+    uint8_t buffer_long[9];
+
+    /* function set */
+    buffer_long[0] = 0x00;
+    buffer_long[1] = 0x38;
+    buffer_long[2] = 0x39;
+
+    /*Internal OSC freq */
+    buffer_long[3] = 0x14;
+
+    /* Contrast set */
+    buffer_long[4] = 0x72;
+
+    /* Power/ICON control/Contrast set */
+    buffer_long[5] = 0x54;
+
+    /* Follower control */
+    buffer_long[6] = 0x6D;
+
+    /* Display on */
+    buffer_long[7] = 0x0F;
+
+    /*Clear display*/
+    buffer_long[8] = 0x01;
+    i2c_lcd_i2c_send(0x3E, buffer_long, 9);
+
+}
+
 
 #pragma vector = USCI_B1_VECTOR
 __interrupt void USCI_B1_ISR(void) {
@@ -97,63 +163,4 @@ __interrupt void USCI_B1_ISR(void) {
         break;
     default: break;
     }
-}
-
-void i2c_lcd_init() {
-    P4SEL |= BIT2 + BIT1;           // P4.1 iP4.2 com a USCI sifem server USCI B1
-    UCB1CTL1 |= UCSWRST;            // Aturem el mòdul
-    //El configurem com a master, sincroni mode i2c, per defecte, estàen single-mastermode
-    UCB1CTL0 = UCMST + UCMODE_3 + UCSYNC;
-    UCB1CTL1 = UCSSEL_2 + UCSWRST;  // UseSMCLK, keepSW resetUCB1BR0 = 160;              // fSCL= SMCLK(16MHz)/160 = ~100kHzUCB1BR1 = 0;UCB1CTL1 &= ~UCSWRST;     // Clear SW reset, resume operationUCB1IE |= UCTXIE | UCRXIE; // EnableTX i RX interrup
-    UCB1BR0 = 160;                  // fSCL= SMCLK(16MHz)/160 = ~100kHz
-    UCB1BR1 = 0;
-    UCB1CTL1 &= ~UCSWRST;           // Clear SW reset, resume operation
-    UCB1IE |= UCTXIE | UCRXIE;      // EnableTX i RX interrupt
-}
-
-
-// ----------------------------------- PUBLIC METHODS ---------------------------------
-
-void i2c_lcd_display_init() {
-    i2c_lcd_init();
-
-    wait_ms(100);
-    /* repeat the function set 4 times (LCD_LM016_resum.pdf) */
-    uint8_t buffer[2];
-    buffer[0] = 0x00;
-    buffer[1] = DB5 | DB4 | DB3 | DB2 | DB0;
-    i2c_lcd_send_cmd(buffer);
-    /* wait > 4.1 mS */
-    wait_ms(10);
-    i2c_lcd_send_cmd(buffer);
-    wait_ms(5);
-    i2c_lcd_send_cmd(buffer);
-    i2c_lcd_send_cmd(buffer); //The number of display lines and character font cant be changed after this
-
-    /* Display off */
-    buffer[0] = 0x00;
-    buffer[1] = DB3;
-    i2c_lcd_send_cmd(buffer);
-    /* Display clear */
-    buffer[0] = 0x00;
-    buffer[1] = DB0;
-    i2c_lcd_send_cmd(buffer);
-    /* Display entry mode set */
-    buffer[0] = 0x00;
-    buffer[1] = DB2 | DB1;
-    i2c_lcd_send_cmd(buffer);
-
-    /*Display on */
-    buffer[0] = 0x00;
-    buffer[1] = DB3 | DB2;
-    i2c_lcd_send_cmd(buffer);
-
-}
-
-void i2c_lcd_send_string(uint8_t *buffer) {
-    i2c_lcd_i2c_send(0x3E, buffer, strlen(buffer));
-}
-
-void i2c_lcd_send_cmd(uint8_t *buffer) {
-    i2c_lcd_i2c_send(0x3E, buffer, I2C_LCD_CMD_LENGTH);
 }

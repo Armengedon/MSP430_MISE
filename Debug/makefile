@@ -10,6 +10,7 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./src/gpio_buttons.obj" \
 "./src/i2c_lcd.obj" \
 "./src/main.obj" \
 "./src/ucs_cfg.obj" \
@@ -159,8 +160,8 @@ MSP430_MISE.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "src\i2c_lcd.obj" "src\main.obj" "src\ucs_cfg.obj" 
-	-$(RM) "src\i2c_lcd.d" "src\main.d" "src\ucs_cfg.d" 
+	-$(RM) "src\gpio_buttons.obj" "src\i2c_lcd.obj" "src\main.obj" "src\ucs_cfg.obj" 
+	-$(RM) "src\gpio_buttons.d" "src\i2c_lcd.d" "src\main.d" "src\ucs_cfg.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

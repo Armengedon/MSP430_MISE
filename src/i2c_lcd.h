@@ -28,8 +28,4 @@ uint8_t dades_smbus[256];
 
 void i2c_lcd_display_init(void);
 
-void i2c_lcd_send_string(uint8_t *buffer);
-
-void i2c_lcd_send_cmd(uint8_t *buffer);
-
 #endif /* SRC_I2C_LCD_H_ */
