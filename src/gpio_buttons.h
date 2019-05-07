@@ -11,22 +11,23 @@
 // ------------------------------------- INCLUDES -------------------------------------
 
 #include "msp430.h"
+#include <stdint.h>
 
 // ------------------------------------- DEFINES --------------------------------------
 
 #define btn_cnl             BIT5
 #define btn_sel             BIT4
-#define jtk_lft             BIT3
-#define jtk_rgt             BIT2
-#define jtk_up              BIT1
-#define jtk_dwn             BIT0
+#define jtk_up              BIT3
+#define jtk_lft             BIT2
+#define jtk_dwn             BIT1
+#define jtk_rgt             BIT0
 
 #define btn_cnl_ifg         0x0C
 #define btn_sel_ifg         0x0A
-#define jtk_lft_ifg         0x08
-#define jtk_rgt_ifg         0x06
 #define jtk_up_ifg          0x04
-#define jtk_dwn_ifg         0x02
+#define jtk_lft_ifg         0x02
+#define jtk_dwn_ifg         0x08
+#define jtk_rgt_ifg         0x06
 
 // ------------------------------------- TYPEDEFS -------------------------------------
 
