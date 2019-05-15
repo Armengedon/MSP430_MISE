@@ -9,7 +9,7 @@
 
 #include "msp430.h"
 #include <stdint.h>
-#include "gpio_buttons.h"
+#include <Modules/buttons.h>
 
 // ------------------------------------- DEFINES --------------------------------------
 
@@ -23,23 +23,23 @@
 
 
 // ----------------------------------- PRIVATE METHODS --------------------------------
-void gpio_buttons_dis_irq(void) {
+void buttons_dis_irq(void) {
     P1IE &= ~(btn_cnl | btn_sel | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
 }
 
-void gpio_buttons_en_irq(void) {
+void buttons_en_irq(void) {
     P1IE |= (btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
 }
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-void gpio_buttons_init(void) {
+void buttons_init(void) {
     P1SEL &= ~(btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
     P1DIR &= ~(btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
     P1REN |= (btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
     P1OUT |= (btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
     P1IFG = 0;
-    gpio_buttons_en_irq();
+    buttons_en_irq();
 }
 
 #pragma vector = PORT1_VECTOR

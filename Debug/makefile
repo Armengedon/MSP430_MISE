@@ -10,10 +10,13 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./src/gpio_buttons.obj" \
-"./src/i2c_lcd.obj" \
+"./src/HAL/i2c.obj" \
+"./src/HAL/timers.obj" \
+"./src/HAL/ucs_cfg.obj" \
+"./src/Modules/buttons.obj" \
+"./src/Modules/lcd.obj" \
+"./src/Modules/ldrs.obj" \
 "./src/main.obj" \
-"./src/ucs_cfg.obj" \
 "../lnk_msp430f5510.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibmath.a \
@@ -27,8 +30,12 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include src/HAL/subdir_vars.mk
+-include src/Modules/subdir_vars.mk
 -include src/subdir_vars.mk
 -include subdir_rules.mk
+-include src/HAL/subdir_rules.mk
+-include src/Modules/subdir_rules.mk
 -include src/subdir_rules.mk
 -include objects.mk
 
@@ -160,8 +167,8 @@ MSP430_MISE.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "src\gpio_buttons.obj" "src\i2c_lcd.obj" "src\main.obj" "src\ucs_cfg.obj" 
-	-$(RM) "src\gpio_buttons.d" "src\i2c_lcd.d" "src\main.d" "src\ucs_cfg.d" 
+	-$(RM) "src\HAL\i2c.obj" "src\HAL\timers.obj" "src\HAL\ucs_cfg.obj" "src\Modules\buttons.obj" "src\Modules\lcd.obj" "src\Modules\ldrs.obj" "src\main.obj" 
+	-$(RM) "src\HAL\i2c.d" "src\HAL\timers.d" "src\HAL\ucs_cfg.d" "src\Modules\buttons.d" "src\Modules\lcd.d" "src\Modules\ldrs.d" "src\main.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

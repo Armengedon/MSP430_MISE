@@ -18,6 +18,7 @@ src/i2c_lcd.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/inclu
 src/i2c_lcd.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/string.h
 src/i2c_lcd.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/_ti_config.h
 src/i2c_lcd.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/linkage.h
+src/i2c_lcd.obj: ../src/HAL/timers.h
 
 ../src/i2c_lcd.c: 
 C:/ti/ccs901/ccs/ccs_base/msp430/include/msp430.h: 
@@ -37,3 +38,4 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/sys/_stdint.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/string.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/_ti_config.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/linkage.h: 
+../src/HAL/timers.h: 

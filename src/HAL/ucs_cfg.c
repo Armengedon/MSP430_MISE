@@ -8,8 +8,8 @@
 
 // ------------------------------------- INCLUDES -------------------------------------
 
-#include "ucs_cfg.h"
 #include "msp430.h"
+#include <HAL/ucs_cfg.h>
 
 // ------------------------------------- DEFINES --------------------------------------
 
@@ -37,7 +37,7 @@ void ucs_cfg_init(void) {
     UCSCTL1 = DCORSEL;                          //Seleccionem el rang de DCO 16 MHz
     UCSCTL2 = FLLN + FLLD_1;                    //Selecciona el factor de multiplicador del DCO
     UCSCTL3 = 0;                                //Referencia FLL SELREF = XT1, divisor 1;
-    /* Seleccio de la font de rellotge: ACLK el clock extern de 2¹⁵, SMCLK i MCLK el DCO extern de 16 MHz */
+    /* Seleccio de la font de rellotge: ACLK el clock extern de 2 32, SMCLK i MCLK el DCO extern de 16 MHz */
     UCSCTL4 = SELA__XT1CLK | SELS__DCOCLKDIV  |  SELM__DCOCLKDIV;
     UCSCTL5 = DIVA__1 | DIVS__1;                //Divisor per SMCLK: f(SMCLK)/1 i  ACLK: f(ACLK)/1
     __bic_SR_register(SCG0);                    // Enable the FLL control loop

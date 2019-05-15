@@ -1,31 +1,27 @@
 /*
- * i2c_lcd.h
+ * gpio_ldrs.h
  *
- *  Created on: 2 may. 2019
- *      Author: jarmengol
+ *  Created on: 7 may. 2019
+ *      Author: Jordi
  */
 
-#ifndef SRC_I2C_LCD_H_
-#define SRC_I2C_LCD_H_
+#ifndef SRC_MODULES_LDRS_H_
+#define SRC_MODULES_LDRS_H_
 
 // ------------------------------------- INCLUDES -------------------------------------
 
-#include <msp430.h>
-#include <stdint.h>
+#include "msp430.h"
 
 // ------------------------------------- DEFINES --------------------------------------
 
-uint8_t *PTxData;
-uint8_t TXByteCtr;
-uint8_t *PRxData;
-uint8_t RXByteCtr;
-uint8_t dades_smbus[256];
+#define ldr_lft             BIT7
+#define ldr_rgt             BIT6
 
 // ------------------------------------- TYPEDEFS -------------------------------------
 
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-void i2c_lcd_display_init(void);
+void ldrs_init(void);
 
-#endif /* SRC_I2C_LCD_H_ */
+#endif /* SRC_MODULES_LDRS_H_ */

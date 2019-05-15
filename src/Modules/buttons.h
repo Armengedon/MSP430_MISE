@@ -5,8 +5,8 @@
  *      Author: Jordi
  */
 
-#ifndef SRC_GPIO_BUTTONS_H_
-#define SRC_GPIO_BUTTONS_H_
+#ifndef SRC_MODULES_BUTTONS_H_
+#define SRC_MODULES_BUTTONS_H_
 
 // ------------------------------------- INCLUDES -------------------------------------
 
@@ -34,6 +34,6 @@
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-void gpio_buttons_init(void);
+void buttons_init(void);
 
-#endif /* SRC_GPIO_BUTTONS_H_ */
+#endif /* SRC_MODULES_BUTTONS_H_ */
