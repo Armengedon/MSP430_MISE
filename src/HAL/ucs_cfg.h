@@ -22,7 +22,4 @@
 
 void ucs_cfg_init(void);
 
-void ucs_cfg_deinit(void);
-
-
 #endif /* SRC_UCS_CFG_H_ */

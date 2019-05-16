@@ -43,6 +43,3 @@ void ucs_cfg_init(void) {
     __bic_SR_register(SCG0);                    // Enable the FLL control loop
 }
 
-void ucs_cfg_deinit(void) {
-
-}

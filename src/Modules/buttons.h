@@ -31,8 +31,20 @@
 
 // ------------------------------------- TYPEDEFS -------------------------------------
 
+typedef enum btn_t{
+    BTN_CNL,
+    BTN_SEL,
+    BTN_JTK_UP,
+    BTN_JTK_LFT,
+    BTN_JTK_DWN,
+    BTN_JTK_RGT,
+    BTN_INVALID,
+} btn_t;
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
+
+btn_t buttons_lastPressed(void);
+
 
 void buttons_init(void);
 

@@ -1,31 +1,33 @@
 /*
- * gpio_ldrs.h
+ * adc.h
  *
- *  Created on: 7 may. 2019
+ *  Created on: 15 may. 2019
  *      Author: Jordi
  */
 
-#ifndef SRC_MODULES_LDRS_H_
-#define SRC_MODULES_LDRS_H_
+#ifndef SRC_HAL_ADC_H_
+#define SRC_HAL_ADC_H_
 
 // ------------------------------------- INCLUDES -------------------------------------
 
-#include "msp430.h"
-#include <HAL/adc.h>
+#include <msp430.h>
+#include <stdint.h>
 
 // ------------------------------------- DEFINES --------------------------------------
 
 // ------------------------------------- TYPEDEFS -------------------------------------
 
-typedef enum channel_t{
-    LDR_LFT = CHANNEL_1,
-    LDR_RGT = CHANNEL_2,
-} ldrChannel_t;
+typedef enum {
+    CHANNEL_1 = ADC10INCH_1, //01 = 1
+    CHANNEL_2 = ADC10INCH_2, //10 = 2
+}channel_t;
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-void ldrs_init(void);
+uint32_t adc_conversion(uint16_t lecture);
 
-uint32_t ldrs_readVoltage(ldrChannel_t ldrToRead);
+uint16_t adc_read(channel_t);
 
-#endif /* SRC_MODULES_LDRS_H_ */
+void adc_init(void);
+
+#endif /* SRC_HAL_ADC_H_ */

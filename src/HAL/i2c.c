@@ -61,7 +61,7 @@ void i2c_init() {
 void i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades) {
     UCB1I2CSA = addr;                   //Coloquem l'adreça de slave en mode write
     PTxData = buffer;                   //adreça del bloc de dades a transmetre
-    TXByteCtr = n_dades;                //carreguem el número de dades a transmetre;
+    TXByteCtr |= n_dades;                //carreguem el número de dades a transmetre;
     UCB1CTL1 |= UCTR + UCTXSTT;         //I2C TX, enviem la condicio de start
     __bis_SR_register(LPM0_bits + GIE); //Enter LPM0, enable interrupts
     __no_operation();                   //Remain in LPM0 until all data are TX

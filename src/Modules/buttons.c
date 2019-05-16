@@ -6,7 +6,6 @@
  */
 
 // ------------------------------------- INCLUDES -------------------------------------
-
 #include "msp430.h"
 #include <stdint.h>
 #include <Modules/buttons.h>
@@ -15,25 +14,51 @@
 
 // ------------------------------------- TYPEDEFS -------------------------------------
 
-
 // ----------------------------------- PRIVATE VARS  ----------------------------------
 
+static volatile btn_t pressed;
 
 // ----------------------------- PRIVATE METHODS PROTOTYPES ---------------------------
 
-
 // ----------------------------------- PRIVATE METHODS --------------------------------
-void buttons_dis_irq(void) {
+void buttons_dis_irq(void)
+{
     P1IE &= ~(btn_cnl | btn_sel | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
 }
 
-void buttons_en_irq(void) {
+void buttons_en_irq(void)
+{
     P1IE |= (btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
 }
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-void buttons_init(void) {
+btn_t buttons_lastPressed(void) {
+    return pressed;
+}
+
+void buttons_init(void)
+{
+    /* init all buttons to output 0 to save power */
+    P1DIR = 0xFF;
+    P1OUT = 0x00;
+
+    P2DIR = 0xFF;
+    P2OUT = 0x00;
+
+    P3DIR = 0xFF;
+    P3OUT = 0x00;
+
+    P4DIR = 0xFF;
+    P4OUT = 0x00;
+
+    P5DIR = 0xFF;
+    P5OUT = 0x00;
+
+    P6DIR = 0xFF;
+    P6OUT = 0x00;
+    /* -----------------------------------------------*/
+
     P1SEL &= ~(btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
     P1DIR &= ~(btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
     P1REN |= (btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
@@ -43,38 +68,40 @@ void buttons_init(void) {
 }
 
 #pragma vector = PORT1_VECTOR
-__interrupt void port1_isr(void) {
+__interrupt void port1_isr(void)
+{
     volatile uint8_t flags_iv = P1IV;
     P1IE &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5);
-    switch(flags_iv) {
-        case btn_cnl_ifg:
-            //TODO: add state change
-            flags_iv = 0;
-            break;
-        case btn_sel_ifg:
-            //TODO: add state change
-            flags_iv = 0;
-            break;
-        case jtk_up_ifg:
-            //TODO: add state change
-            flags_iv = 0;
-            break;
-        case jtk_dwn_ifg:
-            //TODO: add state change
-            flags_iv = 0;
-            break;
-        case jtk_rgt_ifg:
-            //TODO: add state change
-            flags_iv = 0;
-            break;
-        case jtk_lft_ifg:
-            //TODO: add state change
-            flags_iv = 0;
-            break;
-        default:
-            break;
+    switch (flags_iv)
+    {
+    case btn_cnl_ifg:
+        pressed = BTN_CNL;
+        flags_iv = 0;
+        break;
+    case btn_sel_ifg:
+        pressed = BTN_SEL;
+        flags_iv = 0;
+        break;
+    case jtk_up_ifg:
+        pressed = BTN_JTK_UP;
+        flags_iv = 0;
+        break;
+    case jtk_dwn_ifg:
+        pressed = BTN_JTK_DWN;
+        flags_iv = 0;
+        break;
+    case jtk_rgt_ifg:
+        pressed = BTN_JTK_RGT;
+        flags_iv = 0;
+        break;
+    case jtk_lft_ifg:
+        pressed = BTN_JTK_LFT;
+        flags_iv = 0;
+        break;
+    default:
+        break;
     }
+    __bic_SR_register_on_exit(LPM0_bits);
     P1IE |= (BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5);
 }
-
 

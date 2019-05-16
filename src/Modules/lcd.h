@@ -15,17 +15,21 @@
 
 // ------------------------------------- DEFINES --------------------------------------
 
-uint8_t *PTxData;
-uint8_t TXByteCtr;
-uint8_t *PRxData;
-uint8_t RXByteCtr;
-uint8_t dades_smbus[256];
+#define I2C_LCD_TEXT_MAX_SIZE       17           //16 + 1 byte de commandament
+#define LCD_LFT_ARRW_CHAR           127
+
 
 // ------------------------------------- TYPEDEFS -------------------------------------
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-void lcd_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades);
+void lcd_clearDisplay(void);
+
+void lcd_2ndLineShift(void);
+
+void lcd_sendLine(uint8_t *buffer);
+
+void lcd_send(uint8_t *buffer);
 
 void lcd_init(void);
 

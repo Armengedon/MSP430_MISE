@@ -114,5 +114,6 @@ SUBDIRS := \
 . \
 src/HAL \
 src/Modules \
+src/Robot \
 src \
 

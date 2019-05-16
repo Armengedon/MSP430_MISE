@@ -16,7 +16,9 @@
 // ------------------------------------- DEFINES --------------------------------------
 
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
-#define I2C_LCD_TEXT_MAX_SIZE       17           //16 + 1 byte de commandament
+#define LCD_I2C_ADDR                 0x3E
+#define LCD_CMD_LENGTH              2
+#define LCD_2ND_LINE_ADDR           0x40
 
 
 // ------------------------------------- TYPEDEFS -------------------------------------
@@ -45,6 +47,34 @@ void lcd_resetPinInit() {
 
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
+
+void lcd_clearDisplay(void) {
+    uint8_t buffer[LCD_CMD_LENGTH];
+
+    buffer[0] = 0x00;
+    buffer[1] = 0x01;
+
+    i2c_send(LCD_I2C_ADDR, buffer, LCD_CMD_LENGTH);
+}
+
+void lcd_2ndLineShift(void) {
+    uint8_t buffer[LCD_CMD_LENGTH];
+
+    buffer[0] = 0x00;
+    buffer[1] = LCD_2ND_LINE_ADDR | BIT7;
+
+    i2c_send(LCD_I2C_ADDR, buffer, LCD_CMD_LENGTH);
+}
+
+void lcd_sendLine(uint8_t *buffer) {
+    i2c_send(LCD_I2C_ADDR, buffer, 16);
+}
+
+void lcd_send(uint8_t *buffer) {
+
+    i2c_send(LCD_I2C_ADDR, buffer, strlen((const char *) buffer));
+
+}
 
 void lcd_init() {
 

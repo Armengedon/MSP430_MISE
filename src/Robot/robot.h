@@ -1,31 +1,37 @@
 /*
- * gpio_ldrs.h
+ * robot.h
  *
- *  Created on: 7 may. 2019
+ *  Created on: 15 may. 2019
  *      Author: Jordi
  */
 
-#ifndef SRC_MODULES_LDRS_H_
-#define SRC_MODULES_LDRS_H_
+#ifndef SRC_ROBOT_ROBOT_H_
+#define SRC_ROBOT_ROBOT_H_
 
 // ------------------------------------- INCLUDES -------------------------------------
 
 #include "msp430.h"
-#include <HAL/adc.h>
 
 // ------------------------------------- DEFINES --------------------------------------
 
 // ------------------------------------- TYPEDEFS -------------------------------------
-
-typedef enum channel_t{
-    LDR_LFT = CHANNEL_1,
-    LDR_RGT = CHANNEL_2,
-} ldrChannel_t;
+typedef enum {
+    MENU_CALIB_LDRS = 0,
+    MENU_SEEK_LIGHT,
+    MENU_MANUAL_OP,
+} menuSelection_t;
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-void ldrs_init(void);
+void robot_showMenu(menuSelection_t selection);
 
-uint32_t ldrs_readVoltage(ldrChannel_t ldrToRead);
+void robot_mainMenu(void);
 
-#endif /* SRC_MODULES_LDRS_H_ */
+/**
+ * Initialization routine of the different modules of the robot
+ */
+void robot_init(void);
+
+
+
+#endif /* SRC_ROBOT_ROBOT_H_ */

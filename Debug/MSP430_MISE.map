@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v18.12.1                    
 ******************************************************************************
->> Linked Wed May 15 22:16:49 2019
+>> Linked Fri May 17 01:20:58 2019
 
 OUTPUT FILE NAME:   <MSP430_MISE.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00008304
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00008a32
 
 
 MEMORY CONFIGURATION
@@ -19,8 +19,8 @@ MEMORY CONFIGURATION
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
   USBRAM                00001c00   00000800  00000000  00000800  RWIX
-  RAM                   00002400   00001000  000000aa  00000f56  RWIX
-  FLASH                 00008000   00007f80  0000037c  00007c04  RWIX
+  RAM                   00002400   00001000  000000b6  00000f4a  RWIX
+  FLASH                 00008000   00007f80  00000c9a  000072e6  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -92,44 +92,87 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.bss       0    00002400    0000000a     UNINITIALIZED
-                  00002400    00000004     (.common:counter)
-                  00002404    00000002     (.common:PRxData)
-                  00002406    00000002     (.common:PTxData)
-                  00002408    00000001     (.common:RXByteCtr)
-                  00002409    00000001     (.common:TXByteCtr)
+.bss       0    00002400    00000014     UNINITIALIZED
+                  00002400    00000004     adc.obj (.bss)
+                  00002404    00000004     robot.obj (.bss)
+                  00002408    00000004     (.common:counter)
+                  0000240c    00000002     buttons.obj (.bss)
+                  0000240e    00000002     (.common:PRxData)
+                  00002410    00000002     (.common:PTxData)
+                  00002412    00000001     (.common:RXByteCtr)
+                  00002413    00000001     (.common:TXByteCtr)
+
+.data      0    00002414    00000002     UNINITIALIZED
+                  00002414    00000002     ldrs.obj (.data)
 
 .stack     0    00003360    000000a0     UNINITIALIZED
                   00003360    00000002     rts430x_lc_sd_eabi.lib : boot.c.obj (.stack)
                   00003362    0000009e     --HOLE--
 
-.text      0    00008000    0000036a     
-                  00008000    00000072     i2c.obj (.text:_isr:USCI_B1_ISR)
-                  00008072    0000006a     rts430x_lc_sd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
-                  000080dc    0000006a     lcd.obj (.text:lcd_init)
-                  00008146    0000005a     buttons.obj (.text:_isr:port1_isr)
-                  000081a0    0000003e     rts430x_lc_sd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
-                  000081de    00000038     timers.obj (.text:wait_ms)
-                  00008216    00000036     i2c.obj (.text:i2c_init)
-                  0000824c    00000028     timers.obj (.text:_isr:timer0_A0_ISR)
-                  00008274    00000028     ucs_cfg.obj (.text:ucs_cfg_init)
-                  0000829c    00000026     i2c.obj (.text:i2c_send)
-                  000082c2    00000022     buttons.obj (.text:buttons_init)
-                  000082e4    00000020     main.obj (.text:main)
-                  00008304    0000001c     rts430x_lc_sd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs)
-                  00008320    00000012     lcd.obj (.text:lcd_reset)
-                  00008332    0000000e     lcd.obj (.text:lcd_resetPinInit)
-                  00008340    0000000e     timers.obj (.text:timers_init)
-                  0000834e    00000008     rts430x_lc_sd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
-                  00008356    00000008     buttons.obj (.text:buttons_en_irq)
-                  0000835e    00000006     rts430x_lc_sd_eabi.lib : exit.c.obj (.text:abort)
-                  00008364    00000004                            : pre_init.c.obj (.text:_system_pre_init)
-                  00008368    00000002                            : startup.c.obj (.text:_system_post_cinit)
+.text      0    00008000    00000bf6     
+                  00008000    0000010e     rts430x_lc_sd_eabi.lib : _printfi_min.c.obj (.text:_setfield)
+                  0000810e    000000ee                            : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  000081fc    000000e2                            : _printfi_min.c.obj (.text:__TI_printfi_minimal)
+                  000082de    000000c4                            : _printfi_min.c.obj (.text:_pproc_diouxp)
+                  000083a2    000000b4     robot.obj (.text:robot_showMenu)
+                  00008456    00000096     robot.obj (.text:robot_calibADC)
+                  000084ec    0000007c     buttons.obj (.text:_isr:port1_isr)
+                  00008568    00000072     i2c.obj (.text:_isr:USCI_B1_ISR)
+                  000085da    0000006a     rts430x_lc_sd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
+                  00008644    0000006a     lcd.obj (.text:lcd_init)
+                  000086ae    0000006a     robot.obj (.text:robot_changeMenu)
+                  00008718    00000052     buttons.obj (.text:buttons_init)
+                  0000876a    00000040     rts430x_lc_sd_eabi.lib : cpy_util.asm.obj (.text:__memcpy_far)
+                  000087aa    00000040     robot.obj (.text:robot_mainMenu)
+                  000087ea    0000003e     rts430x_lc_sd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  00008828    0000003e                            : lsr32.asm.obj (.text:l_lsr_const)
+                  00008866    0000003c                            : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  000088a2    00000038                            : sprintf.c.obj (.text:sprintf)
+                  000088da    00000038     timers.obj (.text:wait_ms)
+                  00008912    00000036     i2c.obj (.text:i2c_init)
+                  00008948    0000002a     adc.obj (.text:adc_conversion)
+                  00008972    00000028     timers.obj (.text:_isr:timer0_A0_ISR)
+                  0000899a    00000028     ucs_cfg.obj (.text:ucs_cfg_init)
+                  000089c2    00000026     adc.obj (.text:adc_read)
+                  000089e8    00000026     i2c.obj (.text:i2c_send)
+                  00008a0e    00000024     rts430x_lc_sd_eabi.lib : mult32_f5hw.asm.obj (.text)
+                  00008a32    0000001c                            : boot.c.obj (.text:_isr:_c_int00_noargs)
+                  00008a4e    0000001c     lcd.obj (.text:lcd_2ndLineShift)
+                  00008a6a    0000001a     lcd.obj (.text:lcd_clearDisplay)
+                  00008a84    0000001a     rts430x_lc_sd_eabi.lib : memccpy.c.obj (.text:memccpy)
+                  00008a9e    00000018                            : sprintf.c.obj (.text:_outs)
+                  00008ab6    00000018     main.obj (.text:main)
+                  00008ace    00000018     rts430x_lc_sd_eabi.lib : mult16_f5hw.asm.obj (.text)
+                  00008ae6    00000016     robot.obj (.text:robot_init)
+                  00008afc    00000016     rts430x_lc_sd_eabi.lib : div16u.asm.obj (.text)
+                  00008b12    00000014     adc.obj (.text:adc_init)
+                  00008b26    00000014     rts430x_lc_sd_eabi.lib : memset.c.obj (.text:memset)
+                  00008b3a    00000012                            : sprintf.c.obj (.text:_outc)
+                  00008b4c    00000012     lcd.obj (.text:lcd_reset)
+                  00008b5e    00000012     ldrs.obj (.text:ldrs_readVoltage)
+                  00008b70    00000012     rts430x_lc_sd_eabi.lib : memcpy.c.obj (.text:memcpy)
+                  00008b82    00000010     lcd.obj (.text:lcd_sendLine)
+                  00008b92    0000000e     lcd.obj (.text:lcd_resetPinInit)
+                  00008ba0    0000000e     rts430x_lc_sd_eabi.lib : strlen.c.obj (.text:strlen)
+                  00008bae    0000000e     timers.obj (.text:timers_init)
+                  00008bbc    0000000c     adc.obj (.text:_isr:adc10_isr)
+                  00008bc8    0000000c     ldrs.obj (.text:ldrs_init)
+                  00008bd4    00000008     rts430x_lc_sd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
+                  00008bdc    00000008     buttons.obj (.text:buttons_en_irq)
+                  00008be4    00000006     rts430x_lc_sd_eabi.lib : exit.c.obj (.text:abort)
+                  00008bea    00000006     buttons.obj (.text:buttons_lastPressed)
+                  00008bf0    00000004     rts430x_lc_sd_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  00008bf4    00000002                            : startup.c.obj (.text:_system_post_cinit)
 
-.cinit     0    0000836a    00000012     
-                  0000836a    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  00008370    00000004     (__TI_handler_table)
-                  00008374    00000008     (__TI_cinit_table)
+.const     0    00008bf6    0000007c     
+                  00008bf6    00000068     robot.obj (.const:.string)
+                  00008c5e    00000014     rts430x_lc_sd_eabi.lib : _printfi_min.c.obj (.const:.string)
+
+.cinit     0    00008c72    00000028     
+                  00008c72    0000000c     (__TI_handler_table)
+                  00008c7e    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00008c84    00000006     (.cinit..data.load) [load image, compression = lzss]
+                  00008c8a    00000010     (__TI_cinit_table)
 
 .binit     0    00008000    00000000     
 
@@ -182,7 +225,7 @@ TIMER0_A0
                   0000ffea    00000002     timers.obj (.int53)
 
 ADC10      0    0000ffec    00000002     
-                  0000ffec    00000002     rts430x_lc_sd_eabi.lib : int54.asm.obj (.int54)
+                  0000ffec    00000002     adc.obj (.int54)
 
 USCI_B0    0    0000ffee    00000002     
                   0000ffee    00000002     rts430x_lc_sd_eabi.lib : int55.asm.obj (.int55)
@@ -215,72 +258,94 @@ SYSNMI     0    0000fffc    00000002
 
 MODULE SUMMARY
 
-       Module                 code   ro data   rw data
-       ------                 ----   -------   -------
+       Module                       code   ro data   rw data
+       ------                       ----   -------   -------
     .\src\
-       main.obj               32     0         0      
-    +--+----------------------+------+---------+---------+
-       Total:                 32     0         0      
-                                                      
+       main.obj                     24     0         0      
+    +--+----------------------------+------+---------+---------+
+       Total:                       24     0         0      
+                                                            
     .\src\HAL\
-       i2c.obj                206    2         6      
-       timers.obj             110    2         4      
-       ucs_cfg.obj            40     0         0      
-    +--+----------------------+------+---------+---------+
-       Total:                 356    4         10     
-                                                      
+       i2c.obj                      206    2         6      
+       adc.obj                      112    2         4      
+       timers.obj                   110    2         4      
+       ucs_cfg.obj                  40     0         0      
+    +--+----------------------------+------+---------+---------+
+       Total:                       468    6         14     
+                                                            
     .\src\Modules\
-       lcd.obj                138    0         0      
-       buttons.obj            132    2         0      
-    +--+----------------------+------+---------+---------+
-       Total:                 270    2         0      
-                                                      
+       buttons.obj                  220    2         2      
+       lcd.obj                      208    0         0      
+       ldrs.obj                     30     0         2      
+    +--+----------------------------+------+---------+---------+
+       Total:                       458    2         4      
+                                                            
+    .\src\Robot\
+       robot.obj                    522    104       4      
+    +--+----------------------------+------+---------+---------+
+       Total:                       522    104       4      
+                                                            
     C:\ti\ccs901\ccs\tools\compiler\ti-cgt-msp430_18.12.1.LTS\lib\rts430x_lc_sd_eabi.lib
-       autoinit.c.obj         106    0         0      
-       copy_zero_init.c.obj   62     0         0      
-       boot.c.obj             28     2         0      
-       isr_trap.asm.obj       8      0         0      
-       exit.c.obj             6      0         0      
-       pre_init.c.obj         4      0         0      
-       int41.asm.obj          0      2         0      
-       int42.asm.obj          0      2         0      
-       int43.asm.obj          0      2         0      
-       int44.asm.obj          0      2         0      
-       int46.asm.obj          0      2         0      
-       int48.asm.obj          0      2         0      
-       int49.asm.obj          0      2         0      
-       int50.asm.obj          0      2         0      
-       int51.asm.obj          0      2         0      
-       int52.asm.obj          0      2         0      
-       int54.asm.obj          0      2         0      
-       int55.asm.obj          0      2         0      
-       int56.asm.obj          0      2         0      
-       int57.asm.obj          0      2         0      
-       int58.asm.obj          0      2         0      
-       int59.asm.obj          0      2         0      
-       int60.asm.obj          0      2         0      
-       int61.asm.obj          0      2         0      
-       int62.asm.obj          0      2         0      
-       startup.c.obj          2      0         0      
-    +--+----------------------+------+---------+---------+
-       Total:                 216    40        0      
-                                                      
-       Stack:                 0      0         160    
-       Linker Generated:      0      18        0      
-    +--+----------------------+------+---------+---------+
-       Grand Total:           874    64        170    
+       _printfi_min.c.obj           692    20        0      
+       copy_decompress_lzss.c.obj   238    0         0      
+       autoinit.c.obj               106    0         0      
+       sprintf.c.obj                98     0         0      
+       cpy_util.asm.obj             64     0         0      
+       copy_zero_init.c.obj         62     0         0      
+       lsr32.asm.obj                62     0         0      
+       copy_decompress_none.c.obj   60     0         0      
+       mult32_f5hw.asm.obj          36     0         0      
+       boot.c.obj                   28     2         0      
+       memccpy.c.obj                26     0         0      
+       mult16_f5hw.asm.obj          24     0         0      
+       div16u.asm.obj               22     0         0      
+       memset.c.obj                 20     0         0      
+       memcpy.c.obj                 18     0         0      
+       strlen.c.obj                 14     0         0      
+       isr_trap.asm.obj             8      0         0      
+       exit.c.obj                   6      0         0      
+       pre_init.c.obj               4      0         0      
+       int41.asm.obj                0      2         0      
+       int42.asm.obj                0      2         0      
+       int43.asm.obj                0      2         0      
+       int44.asm.obj                0      2         0      
+       int46.asm.obj                0      2         0      
+       int48.asm.obj                0      2         0      
+       int49.asm.obj                0      2         0      
+       int50.asm.obj                0      2         0      
+       int51.asm.obj                0      2         0      
+       int52.asm.obj                0      2         0      
+       int55.asm.obj                0      2         0      
+       int56.asm.obj                0      2         0      
+       int57.asm.obj                0      2         0      
+       int58.asm.obj                0      2         0      
+       int59.asm.obj                0      2         0      
+       int60.asm.obj                0      2         0      
+       int61.asm.obj                0      2         0      
+       int62.asm.obj                0      2         0      
+       startup.c.obj                2      0         0      
+    +--+----------------------------+------+---------+---------+
+       Total:                       1590   58        0      
+                                                            
+       Stack:                       0      0         160    
+       Linker Generated:            0      40        0      
+    +--+----------------------------+------+---------+---------+
+       Grand Total:                 3062   210       182    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00008374 records: 1, size/record: 8, table size: 8
-	.bss: load addr=0000836a, load size=00000006 bytes, run addr=00002400, run size=0000000a bytes, compression=zero_init
+__TI_cinit_table @ 00008c8a records: 2, size/record: 8, table size: 16
+	.bss: load addr=00008c7e, load size=00000006 bytes, run addr=00002400, run size=00000014 bytes, compression=zero_init
+	.data: load addr=00008c84, load size=00000006 bytes, run addr=00002414, run size=00000002 bytes, compression=lzss
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00008370 records: 1, size/record: 4, table size: 4
+__TI_handler_table @ 00008c72 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
+	index: 1, handler: __TI_decompress_lzss
+	index: 2, handler: __TI_decompress_none
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
@@ -317,7 +382,7 @@ address   name
 00000752  ADC10MEM0                              
 00000753  ADC10MEM0_H                            
 00000752  ADC10MEM0_L                            
-0000835e  C$$EXIT                                
+00008be4  C$$EXIT                                
 000008c0  CBCTL0                                 
 000008c1  CBCTL0_H                               
 000008c0  CBCTL0_L                               
@@ -564,8 +629,8 @@ address   name
 0000012e  PMMRIE                                 
 0000012f  PMMRIE_H                               
 0000012e  PMMRIE_L                               
-00002404  PRxData                                
-00002406  PTxData                                
+0000240e  PRxData                                
+00002410  PTxData                                
 00000158  RCCTL0                                 
 00000159  RCCTL0_H                               
 00000158  RCCTL0_L                               
@@ -624,7 +689,7 @@ address   name
 000004b6  RTCYEAR                                
 000004b7  RTCYEAR_H                              
 000004b6  RTCYEAR_L                              
-00002408  RXByteCtr                              
+00002412  RXByteCtr                              
 00000100  SFRIE1                                 
 00000101  SFRIE1_H                               
 00000100  SFRIE1_L                               
@@ -731,7 +796,7 @@ address   name
 000003e0  TB0EX0                                 
 000003ee  TB0IV                                  
 000003d0  TB0R                                   
-00002409  TXByteCtr                              
+00002413  TXByteCtr                              
 000005d0  UCA0ABCTL                              
 000005c6  UCA0BRW                                
 000005c7  UCA0BRW_H                              
@@ -967,18 +1032,20 @@ address   name
 00000932  USBVECINT                              
 00000933  USBVECINT_H                            
 00000932  USBVECINT_L                            
-00008000  USCI_B1_ISR                            
+00008568  USCI_B1_ISR                            
 0000015c  WDTCTL                                 
 0000015d  WDTCTL_H                               
 0000015c  WDTCTL_L                               
 00003400  __STACK_END                            
 000000a0  __STACK_SIZE                           
-00008374  __TI_CINIT_Base                        
-0000837c  __TI_CINIT_Limit                       
-00008370  __TI_Handler_Table_Base                
-00008374  __TI_Handler_Table_Limit               
-0000834e  __TI_ISR_TRAP                          
-00008072  __TI_auto_init_nobinit_nopinit_hold_wdt
+00008c8a  __TI_CINIT_Base                        
+00008c9a  __TI_CINIT_Limit                       
+00008c72  __TI_Handler_Table_Base                
+00008c7e  __TI_Handler_Table_Limit               
+00008bd4  __TI_ISR_TRAP                          
+000085da  __TI_auto_init_nobinit_nopinit_hold_wdt
+0000810e  __TI_decompress_lzss                   
+00008866  __TI_decompress_none                   
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -1002,30 +1069,72 @@ address   name
 0000fffa  __TI_int61                             
 0000fffc  __TI_int62                             
 ffffffff  __TI_pprof_out_hndl                    
+000081fc  __TI_printfi_minimal                   
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
-000081a0  __TI_zero_init_nomemset                
+000087ea  __TI_zero_init_nomemset                
 ffffffff  __c_args__                             
-00008304  _c_int00_noargs                        
+0000876a  __memcpy_far                           
+00008afc  __mspabi_divu                          
+00008ace  __mspabi_mpyi_f5hw                     
+00008a0e  __mspabi_mpyl_f5hw                     
+00008afc  __mspabi_remu                          
+00008860  __mspabi_srll_1                        
+0000883c  __mspabi_srll_10                       
+00008838  __mspabi_srll_11                       
+00008834  __mspabi_srll_12                       
+00008830  __mspabi_srll_13                       
+0000882c  __mspabi_srll_14                       
+00008828  __mspabi_srll_15                       
+0000885c  __mspabi_srll_2                        
+00008858  __mspabi_srll_3                        
+00008854  __mspabi_srll_4                        
+00008850  __mspabi_srll_5                        
+0000884c  __mspabi_srll_6                        
+00008848  __mspabi_srll_7                        
+00008844  __mspabi_srll_8                        
+00008840  __mspabi_srll_9                        
+00008a32  _c_int00_noargs                        
 0000fffe  _reset_vector                          
 00003360  _stack                                 
-00008368  _system_post_cinit                     
-00008364  _system_pre_init                       
-0000835e  abort                                  
-00008356  buttons_en_irq                         
-000082c2  buttons_init                           
-00002400  counter                                
-00008216  i2c_init                               
-0000829c  i2c_send                               
-000080dc  lcd_init                               
-00008320  lcd_reset                              
-00008332  lcd_resetPinInit                       
-000082e4  main                                   
-00008146  port1_isr                              
-0000824c  timer0_A0_ISR                          
-00008340  timers_init                            
-00008274  ucs_cfg_init                           
-000081de  wait_ms                                
+00008bf4  _system_post_cinit                     
+00008bf0  _system_pre_init                       
+00008be4  abort                                  
+00008bbc  adc10_isr                              
+00008948  adc_conversion                         
+00008b12  adc_init                               
+000089c2  adc_read                               
+00008bdc  buttons_en_irq                         
+00008718  buttons_init                           
+00008bea  buttons_lastPressed                    
+00002408  counter                                
+00008912  i2c_init                               
+000089e8  i2c_send                               
+00008a4e  lcd_2ndLineShift                       
+00008a6a  lcd_clearDisplay                       
+00008644  lcd_init                               
+00008b4c  lcd_reset                              
+00008b92  lcd_resetPinInit                       
+00008b82  lcd_sendLine                           
+00008bc8  ldrs_init                              
+00008b5e  ldrs_readVoltage                       
+00002414  lecture                                
+00008ab6  main                                   
+00008a84  memccpy                                
+00008b70  memcpy                                 
+00008b26  memset                                 
+000084ec  port1_isr                              
+00008456  robot_calibADC                         
+000086ae  robot_changeMenu                       
+00008ae6  robot_init                             
+000087aa  robot_mainMenu                         
+000083a2  robot_showMenu                         
+000088a2  sprintf                                
+00008ba0  strlen                                 
+00008972  timer0_A0_ISR                          
+00008bae  timers_init                            
+0000899a  ucs_cfg_init                           
+000088da  wait_ms                                
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1711,39 +1820,83 @@ address   name
 000023fd  USBIEPBBAY_7                           
 000023fe  USBIEPBCTY_7                           
 000023ff  USBIEPSIZXY_7                          
-00002400  counter                                
-00002404  PRxData                                
-00002406  PTxData                                
-00002408  RXByteCtr                              
-00002409  TXByteCtr                              
+00002408  counter                                
+0000240e  PRxData                                
+00002410  PTxData                                
+00002412  RXByteCtr                              
+00002413  TXByteCtr                              
+00002414  lecture                                
 00003360  _stack                                 
 00003400  __STACK_END                            
-00008000  USCI_B1_ISR                            
-00008072  __TI_auto_init_nobinit_nopinit_hold_wdt
-000080dc  lcd_init                               
-00008146  port1_isr                              
-000081a0  __TI_zero_init_nomemset                
-000081de  wait_ms                                
-00008216  i2c_init                               
-0000824c  timer0_A0_ISR                          
-00008274  ucs_cfg_init                           
-0000829c  i2c_send                               
-000082c2  buttons_init                           
-000082e4  main                                   
-00008304  _c_int00_noargs                        
-00008320  lcd_reset                              
-00008332  lcd_resetPinInit                       
-00008340  timers_init                            
-0000834e  __TI_ISR_TRAP                          
-00008356  buttons_en_irq                         
-0000835e  C$$EXIT                                
-0000835e  abort                                  
-00008364  _system_pre_init                       
-00008368  _system_post_cinit                     
-00008370  __TI_Handler_Table_Base                
-00008374  __TI_CINIT_Base                        
-00008374  __TI_Handler_Table_Limit               
-0000837c  __TI_CINIT_Limit                       
+0000810e  __TI_decompress_lzss                   
+000081fc  __TI_printfi_minimal                   
+000083a2  robot_showMenu                         
+00008456  robot_calibADC                         
+000084ec  port1_isr                              
+00008568  USCI_B1_ISR                            
+000085da  __TI_auto_init_nobinit_nopinit_hold_wdt
+00008644  lcd_init                               
+000086ae  robot_changeMenu                       
+00008718  buttons_init                           
+0000876a  __memcpy_far                           
+000087aa  robot_mainMenu                         
+000087ea  __TI_zero_init_nomemset                
+00008828  __mspabi_srll_15                       
+0000882c  __mspabi_srll_14                       
+00008830  __mspabi_srll_13                       
+00008834  __mspabi_srll_12                       
+00008838  __mspabi_srll_11                       
+0000883c  __mspabi_srll_10                       
+00008840  __mspabi_srll_9                        
+00008844  __mspabi_srll_8                        
+00008848  __mspabi_srll_7                        
+0000884c  __mspabi_srll_6                        
+00008850  __mspabi_srll_5                        
+00008854  __mspabi_srll_4                        
+00008858  __mspabi_srll_3                        
+0000885c  __mspabi_srll_2                        
+00008860  __mspabi_srll_1                        
+00008866  __TI_decompress_none                   
+000088a2  sprintf                                
+000088da  wait_ms                                
+00008912  i2c_init                               
+00008948  adc_conversion                         
+00008972  timer0_A0_ISR                          
+0000899a  ucs_cfg_init                           
+000089c2  adc_read                               
+000089e8  i2c_send                               
+00008a0e  __mspabi_mpyl_f5hw                     
+00008a32  _c_int00_noargs                        
+00008a4e  lcd_2ndLineShift                       
+00008a6a  lcd_clearDisplay                       
+00008a84  memccpy                                
+00008ab6  main                                   
+00008ace  __mspabi_mpyi_f5hw                     
+00008ae6  robot_init                             
+00008afc  __mspabi_divu                          
+00008afc  __mspabi_remu                          
+00008b12  adc_init                               
+00008b26  memset                                 
+00008b4c  lcd_reset                              
+00008b5e  ldrs_readVoltage                       
+00008b70  memcpy                                 
+00008b82  lcd_sendLine                           
+00008b92  lcd_resetPinInit                       
+00008ba0  strlen                                 
+00008bae  timers_init                            
+00008bbc  adc10_isr                              
+00008bc8  ldrs_init                              
+00008bd4  __TI_ISR_TRAP                          
+00008bdc  buttons_en_irq                         
+00008be4  C$$EXIT                                
+00008be4  abort                                  
+00008bea  buttons_lastPressed                    
+00008bf0  _system_pre_init                       
+00008bf4  _system_post_cinit                     
+00008c72  __TI_Handler_Table_Base                
+00008c7e  __TI_Handler_Table_Limit               
+00008c8a  __TI_CINIT_Base                        
+00008c9a  __TI_CINIT_Limit                       
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -1772,4 +1925,4 @@ ffffffff  __TI_prof_data_size
 ffffffff  __TI_prof_data_start                   
 ffffffff  __c_args__                             
 
-[739 symbols]
+[783 symbols]
