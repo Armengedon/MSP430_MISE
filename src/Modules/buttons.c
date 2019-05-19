@@ -17,6 +17,7 @@
 // ----------------------------------- PRIVATE VARS  ----------------------------------
 
 static volatile btn_t pressed;
+uint8_t pressed_read;
 
 // ----------------------------- PRIVATE METHODS PROTOTYPES ---------------------------
 
@@ -34,6 +35,10 @@ void buttons_en_irq(void)
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
 btn_t buttons_lastPressed(void) {
+    if (pressed_read) {
+        pressed = BTN_INVALID;
+    }
+    pressed_read = 1;
     return pressed;
 }
 
@@ -101,6 +106,8 @@ __interrupt void port1_isr(void)
     default:
         break;
     }
+
+    pressed_read = 0;
     __bic_SR_register_on_exit(LPM0_bits);
     P1IE |= (BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5);
 }

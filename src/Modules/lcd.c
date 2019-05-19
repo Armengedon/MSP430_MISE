@@ -30,6 +30,9 @@
 
 void lcd_reset(void);
 
+void lcd_send(uint8_t *buffer);
+
+
 // ----------------------------------- PRIVATE METHODS --------------------------------
 
 void lcd_reset() {
@@ -45,6 +48,9 @@ void lcd_resetPinInit() {
     P6OUT |= BIT0;
 }
 
+void lcd_send(uint8_t *buffer) {
+    i2c_send(LCD_I2C_ADDR, buffer, strlen((const char *) buffer));
+}
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
@@ -68,12 +74,6 @@ void lcd_2ndLineShift(void) {
 
 void lcd_sendLine(uint8_t *buffer) {
     i2c_send(LCD_I2C_ADDR, buffer, 16);
-}
-
-void lcd_send(uint8_t *buffer) {
-
-    i2c_send(LCD_I2C_ADDR, buffer, strlen((const char *) buffer));
-
 }
 
 void lcd_init() {

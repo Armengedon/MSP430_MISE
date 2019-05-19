@@ -16,10 +16,9 @@ int main(void)
     __enable_interrupt();
     robot_init();
 
-    robot_mainMenu();
-
     while (1)
     {
+        robot_mainMenu();
     }
 
 }

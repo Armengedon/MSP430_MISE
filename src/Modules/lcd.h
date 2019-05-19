@@ -29,8 +29,6 @@ void lcd_2ndLineShift(void);
 
 void lcd_sendLine(uint8_t *buffer);
 
-void lcd_send(uint8_t *buffer);
-
 void lcd_init(void);
 
 #endif /* SRC_MODULES_LCD_H_ */
