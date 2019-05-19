@@ -13,7 +13,9 @@ ORDERED_OBJS += \
 "./src/HAL/adc.obj" \
 "./src/HAL/i2c.obj" \
 "./src/HAL/timers.obj" \
+"./src/HAL/uart.obj" \
 "./src/HAL/ucs_cfg.obj" \
+"./src/Modules/AX12.obj" \
 "./src/Modules/buttons.obj" \
 "./src/Modules/lcd.obj" \
 "./src/Modules/ldrs.obj" \
@@ -171,8 +173,8 @@ MSP430_MISE.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "src\HAL\adc.obj" "src\HAL\i2c.obj" "src\HAL\timers.obj" "src\HAL\ucs_cfg.obj" "src\Modules\buttons.obj" "src\Modules\lcd.obj" "src\Modules\ldrs.obj" "src\Robot\robot.obj" "src\main.obj" 
-	-$(RM) "src\HAL\adc.d" "src\HAL\i2c.d" "src\HAL\timers.d" "src\HAL\ucs_cfg.d" "src\Modules\buttons.d" "src\Modules\lcd.d" "src\Modules\ldrs.d" "src\Robot\robot.d" "src\main.d" 
+	-$(RM) "src\HAL\adc.obj" "src\HAL\i2c.obj" "src\HAL\timers.obj" "src\HAL\uart.obj" "src\HAL\ucs_cfg.obj" "src\Modules\AX12.obj" "src\Modules\buttons.obj" "src\Modules\lcd.obj" "src\Modules\ldrs.obj" "src\Robot\robot.obj" "src\main.obj" 
+	-$(RM) "src\HAL\adc.d" "src\HAL\i2c.d" "src\HAL\timers.d" "src\HAL\uart.d" "src\HAL\ucs_cfg.d" "src\Modules\AX12.d" "src\Modules\buttons.d" "src\Modules\lcd.d" "src\Modules\ldrs.d" "src\Robot\robot.d" "src\main.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

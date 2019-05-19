@@ -14,9 +14,7 @@
 #include <Modules/buttons.h>
 #include <Modules/lcd.h>
 #include <Modules/ldrs.h>
-
-#include <HAL/adc.h>
-
+#include <Modules/AX12.h>
 #include <Robot/robot.h>
 
 
@@ -173,4 +171,13 @@ void robot_init(void) {
     buttons_init();
     lcd_init();
     ldrs_init();
+    AX12_init();
+
+    AX12_motorControl(AX12_LEFT, AX12_LFT_FORWARD, AX12_SPD_SLW);
+
+    wait_ms(1000);
+
+    AX12_motorControl(AX12_BROADCAST, AX12_LFT_FORWARD, AX12_SPD_STP);
+
+
 }

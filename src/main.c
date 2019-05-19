@@ -13,14 +13,10 @@
 int main(void)
 {
     WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
-    _enable_interrupt();
-
+    __enable_interrupt();
     robot_init();
 
     robot_mainMenu();
-
-//    uint8_t buffer[10] = "@Hello";
-//    i2c_lcd_i2c_send(0x3E, buffer, 6);
 
     while (1)
     {

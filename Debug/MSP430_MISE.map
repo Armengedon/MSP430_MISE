@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v18.12.1                    
 ******************************************************************************
->> Linked Fri May 17 01:20:58 2019
+>> Linked Sun May 19 13:18:27 2019
 
 OUTPUT FILE NAME:   <MSP430_MISE.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00008a32
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00008cba
 
 
 MEMORY CONFIGURATION
@@ -19,8 +19,8 @@ MEMORY CONFIGURATION
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
   USBRAM                00001c00   00000800  00000000  00000800  RWIX
-  RAM                   00002400   00001000  000000b6  00000f4a  RWIX
-  FLASH                 00008000   00007f80  00000c9a  000072e6  RWIX
+  RAM                   00002400   00001000  000000ba  00000f46  RWIX
+  FLASH                 00008000   00007f80  00000f9a  00006fe6  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -92,87 +92,108 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.bss       0    00002400    00000014     UNINITIALIZED
+.bss       0    00002400    00000018     UNINITIALIZED
                   00002400    00000004     adc.obj (.bss)
                   00002404    00000004     robot.obj (.bss)
-                  00002408    00000004     (.common:counter)
+                  00002408    00000004     (.common:timers_ms_counter)
                   0000240c    00000002     buttons.obj (.bss)
                   0000240e    00000002     (.common:PRxData)
                   00002410    00000002     (.common:PTxData)
-                  00002412    00000001     (.common:RXByteCtr)
-                  00002413    00000001     (.common:TXByteCtr)
+                  00002412    00000002     (.common:timer_mode)
+                  00002414    00000001     (.common:Byte_Recibido)
+                  00002415    00000001     (.common:DatoLeido_UART)
+                  00002416    00000001     (.common:RXByteCtr)
+                  00002417    00000001     (.common:TXByteCtr)
 
-.data      0    00002414    00000002     UNINITIALIZED
-                  00002414    00000002     ldrs.obj (.data)
+.data      0    00002418    00000002     UNINITIALIZED
+                  00002418    00000002     ldrs.obj (.data)
 
 .stack     0    00003360    000000a0     UNINITIALIZED
                   00003360    00000002     rts430x_lc_sd_eabi.lib : boot.c.obj (.stack)
                   00003362    0000009e     --HOLE--
 
-.text      0    00008000    00000bf6     
+.text      0    00008000    00000ed0     
                   00008000    0000010e     rts430x_lc_sd_eabi.lib : _printfi_min.c.obj (.text:_setfield)
                   0000810e    000000ee                            : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  000081fc    000000e2                            : _printfi_min.c.obj (.text:__TI_printfi_minimal)
-                  000082de    000000c4                            : _printfi_min.c.obj (.text:_pproc_diouxp)
-                  000083a2    000000b4     robot.obj (.text:robot_showMenu)
-                  00008456    00000096     robot.obj (.text:robot_calibADC)
-                  000084ec    0000007c     buttons.obj (.text:_isr:port1_isr)
-                  00008568    00000072     i2c.obj (.text:_isr:USCI_B1_ISR)
-                  000085da    0000006a     rts430x_lc_sd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
-                  00008644    0000006a     lcd.obj (.text:lcd_init)
-                  000086ae    0000006a     robot.obj (.text:robot_changeMenu)
-                  00008718    00000052     buttons.obj (.text:buttons_init)
-                  0000876a    00000040     rts430x_lc_sd_eabi.lib : cpy_util.asm.obj (.text:__memcpy_far)
-                  000087aa    00000040     robot.obj (.text:robot_mainMenu)
-                  000087ea    0000003e     rts430x_lc_sd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
-                  00008828    0000003e                            : lsr32.asm.obj (.text:l_lsr_const)
-                  00008866    0000003c                            : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
-                  000088a2    00000038                            : sprintf.c.obj (.text:sprintf)
-                  000088da    00000038     timers.obj (.text:wait_ms)
-                  00008912    00000036     i2c.obj (.text:i2c_init)
-                  00008948    0000002a     adc.obj (.text:adc_conversion)
-                  00008972    00000028     timers.obj (.text:_isr:timer0_A0_ISR)
-                  0000899a    00000028     ucs_cfg.obj (.text:ucs_cfg_init)
-                  000089c2    00000026     adc.obj (.text:adc_read)
-                  000089e8    00000026     i2c.obj (.text:i2c_send)
-                  00008a0e    00000024     rts430x_lc_sd_eabi.lib : mult32_f5hw.asm.obj (.text)
-                  00008a32    0000001c                            : boot.c.obj (.text:_isr:_c_int00_noargs)
-                  00008a4e    0000001c     lcd.obj (.text:lcd_2ndLineShift)
-                  00008a6a    0000001a     lcd.obj (.text:lcd_clearDisplay)
-                  00008a84    0000001a     rts430x_lc_sd_eabi.lib : memccpy.c.obj (.text:memccpy)
-                  00008a9e    00000018                            : sprintf.c.obj (.text:_outs)
-                  00008ab6    00000018     main.obj (.text:main)
-                  00008ace    00000018     rts430x_lc_sd_eabi.lib : mult16_f5hw.asm.obj (.text)
-                  00008ae6    00000016     robot.obj (.text:robot_init)
-                  00008afc    00000016     rts430x_lc_sd_eabi.lib : div16u.asm.obj (.text)
-                  00008b12    00000014     adc.obj (.text:adc_init)
-                  00008b26    00000014     rts430x_lc_sd_eabi.lib : memset.c.obj (.text:memset)
-                  00008b3a    00000012                            : sprintf.c.obj (.text:_outc)
-                  00008b4c    00000012     lcd.obj (.text:lcd_reset)
-                  00008b5e    00000012     ldrs.obj (.text:ldrs_readVoltage)
-                  00008b70    00000012     rts430x_lc_sd_eabi.lib : memcpy.c.obj (.text:memcpy)
-                  00008b82    00000010     lcd.obj (.text:lcd_sendLine)
-                  00008b92    0000000e     lcd.obj (.text:lcd_resetPinInit)
-                  00008ba0    0000000e     rts430x_lc_sd_eabi.lib : strlen.c.obj (.text:strlen)
-                  00008bae    0000000e     timers.obj (.text:timers_init)
-                  00008bbc    0000000c     adc.obj (.text:_isr:adc10_isr)
-                  00008bc8    0000000c     ldrs.obj (.text:ldrs_init)
-                  00008bd4    00000008     rts430x_lc_sd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
-                  00008bdc    00000008     buttons.obj (.text:buttons_en_irq)
-                  00008be4    00000006     rts430x_lc_sd_eabi.lib : exit.c.obj (.text:abort)
-                  00008bea    00000006     buttons.obj (.text:buttons_lastPressed)
-                  00008bf0    00000004     rts430x_lc_sd_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
-                  00008bf4    00000002                            : startup.c.obj (.text:_system_post_cinit)
+                  000081fc    000000e6     AX12.obj (.text:RxPacket)
+                  000082e2    000000e2     rts430x_lc_sd_eabi.lib : _printfi_min.c.obj (.text:__TI_printfi_minimal)
+                  000083c4    000000c4                            : _printfi_min.c.obj (.text:_pproc_diouxp)
+                  00008488    000000b4     robot.obj (.text:robot_showMenu)
+                  0000853c    00000096     robot.obj (.text:robot_calibADC)
+                  000085d2    00000090     AX12.obj (.text:TxPacket)
+                  00008662    0000007c     buttons.obj (.text:_isr:port1_isr)
+                  000086de    00000072     i2c.obj (.text:_isr:USCI_B1_ISR)
+                  00008750    0000006a     rts430x_lc_sd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
+                  000087ba    0000006a     lcd.obj (.text:lcd_init)
+                  00008824    0000006a     robot.obj (.text:robot_changeMenu)
+                  0000888e    00000052     buttons.obj (.text:buttons_init)
+                  000088e0    00000048     uart.obj (.text:uart_init)
+                  00008928    00000040     rts430x_lc_sd_eabi.lib : cpy_util.asm.obj (.text:__memcpy_far)
+                  00008968    00000040     robot.obj (.text:robot_mainMenu)
+                  000089a8    0000003e     rts430x_lc_sd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  000089e6    0000003e                            : lsr32.asm.obj (.text:l_lsr_const)
+                  00008a24    0000003c                            : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  00008a60    0000003c     robot.obj (.text:robot_init)
+                  00008a9c    0000003c     timers.obj (.text:wait_ms)
+                  00008ad8    00000038     AX12.obj (.text:AX12_motorControl)
+                  00008b10    00000038     rts430x_lc_sd_eabi.lib : sprintf.c.obj (.text:sprintf)
+                  00008b48    00000036     i2c.obj (.text:i2c_init)
+                  00008b7e    00000034     AX12.obj (.text:setAngle)
+                  00008bb2    0000002a     adc.obj (.text:adc_conversion)
+                  00008bdc    00000028     timers.obj (.text:_isr:timer0_A0_ISR)
+                  00008c04    00000028     ucs_cfg.obj (.text:ucs_cfg_init)
+                  00008c2c    00000026     adc.obj (.text:adc_read)
+                  00008c52    00000026     i2c.obj (.text:i2c_send)
+                  00008c78    00000024     rts430x_lc_sd_eabi.lib : mult32_f5hw.asm.obj (.text)
+                  00008c9c    0000001e     timers.obj (.text:timers_timeout_start)
+                  00008cba    0000001c     rts430x_lc_sd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs)
+                  00008cd6    0000001c     lcd.obj (.text:lcd_2ndLineShift)
+                  00008cf2    0000001a     lcd.obj (.text:lcd_clearDisplay)
+                  00008d0c    0000001a     rts430x_lc_sd_eabi.lib : memccpy.c.obj (.text:memccpy)
+                  00008d26    00000018                            : sprintf.c.obj (.text:_outs)
+                  00008d3e    00000018     main.obj (.text:main)
+                  00008d56    00000018     rts430x_lc_sd_eabi.lib : mult16_f5hw.asm.obj (.text)
+                  00008d6e    00000016                            : div16u.asm.obj (.text)
+                  00008d84    00000014     uart.obj (.text:_isr:USCI_A1_ISR)
+                  00008d98    00000014     adc.obj (.text:adc_init)
+                  00008dac    00000014     rts430x_lc_sd_eabi.lib : memset.c.obj (.text:memset)
+                  00008dc0    00000012                            : sprintf.c.obj (.text:_outc)
+                  00008dd2    00000012     lcd.obj (.text:lcd_reset)
+                  00008de4    00000012     ldrs.obj (.text:ldrs_readVoltage)
+                  00008df6    00000012     rts430x_lc_sd_eabi.lib : memcpy.c.obj (.text:memcpy)
+                  00008e08    00000012     timers.obj (.text:timers_init)
+                  00008e1a    00000012     timers.obj (.text:timers_isTimeout)
+                  00008e2c    00000010     lcd.obj (.text:lcd_sendLine)
+                  00008e3c    0000000e     lcd.obj (.text:lcd_resetPinInit)
+                  00008e4a    0000000e     rts430x_lc_sd_eabi.lib : strlen.c.obj (.text:strlen)
+                  00008e58    0000000c     adc.obj (.text:_isr:adc10_isr)
+                  00008e64    0000000c     ldrs.obj (.text:ldrs_init)
+                  00008e70    0000000c     uart.obj (.text:uart_send_byte)
+                  00008e7c    0000000a     AX12.obj (.text:AX12_init)
+                  00008e86    0000000a     uart.obj (.text:uart_getDatoLeido)
+                  00008e90    00000008     AX12.obj (.text:Sentit_Dades_Rx)
+                  00008e98    00000008     AX12.obj (.text:Sentit_Dades_Tx)
+                  00008ea0    00000008     rts430x_lc_sd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
+                  00008ea8    00000008     buttons.obj (.text:buttons_en_irq)
+                  00008eb0    00000008     timers.obj (.text:timers_timeout_stop)
+                  00008eb8    00000006     rts430x_lc_sd_eabi.lib : exit.c.obj (.text:abort)
+                  00008ebe    00000006     buttons.obj (.text:buttons_lastPressed)
+                  00008ec4    00000006     uart.obj (.text:uart_isByte_Recibido)
+                  00008eca    00000004     rts430x_lc_sd_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  00008ece    00000002                            : startup.c.obj (.text:_system_post_cinit)
 
-.const     0    00008bf6    0000007c     
-                  00008bf6    00000068     robot.obj (.const:.string)
-                  00008c5e    00000014     rts430x_lc_sd_eabi.lib : _printfi_min.c.obj (.const:.string)
+.const     0    00008ed0    000000a2     
+                  00008ed0    00000068     robot.obj (.const:.string)
+                  00008f38    00000015     AX12.obj (.const:$P$T0$1)
+                  00008f4d    00000001     --HOLE-- [fill = 0]
+                  00008f4e    00000014     rts430x_lc_sd_eabi.lib : _printfi_min.c.obj (.const:.string)
+                  00008f62    00000010     AX12.obj (.const:.string:$P$T1$2)
 
-.cinit     0    00008c72    00000028     
-                  00008c72    0000000c     (__TI_handler_table)
-                  00008c7e    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  00008c84    00000006     (.cinit..data.load) [load image, compression = lzss]
-                  00008c8a    00000010     (__TI_cinit_table)
+.cinit     0    00008f72    00000028     
+                  00008f72    0000000c     (__TI_handler_table)
+                  00008f7e    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00008f84    00000006     (.cinit..data.load) [load image, compression = lzss]
+                  00008f8a    00000010     (__TI_cinit_table)
 
 .binit     0    00008000    00000000     
 
@@ -197,7 +218,7 @@ USCI_B1    0    0000ffda    00000002
                   0000ffda    00000002     i2c.obj (.int45)
 
 USCI_A1    0    0000ffdc    00000002     
-                  0000ffdc    00000002     rts430x_lc_sd_eabi.lib : int46.asm.obj (.int46)
+                  0000ffdc    00000002     uart.obj (.int46)
 
 PORT1      0    0000ffde    00000002     
                   0000ffde    00000002     buttons.obj (.int47)
@@ -267,23 +288,25 @@ MODULE SUMMARY
                                                             
     .\src\HAL\
        i2c.obj                      206    2         6      
+       timers.obj                   174    2         6      
+       uart.obj                     120    2         2      
        adc.obj                      112    2         4      
-       timers.obj                   110    2         4      
        ucs_cfg.obj                  40     0         0      
     +--+----------------------------+------+---------+---------+
-       Total:                       468    6         14     
+       Total:                       652    8         18     
                                                             
     .\src\Modules\
+       AX12.obj                     508    37        0      
        buttons.obj                  220    2         2      
        lcd.obj                      208    0         0      
        ldrs.obj                     30     0         2      
     +--+----------------------------+------+---------+---------+
-       Total:                       458    2         4      
+       Total:                       966    39        4      
                                                             
     .\src\Robot\
-       robot.obj                    522    104       4      
+       robot.obj                    560    104       4      
     +--+----------------------------+------+---------+---------+
-       Total:                       522    104       4      
+       Total:                       560    104       4      
                                                             
     C:\ti\ccs901\ccs\tools\compiler\ti-cgt-msp430_18.12.1.LTS\lib\rts430x_lc_sd_eabi.lib
        _printfi_min.c.obj           692    20        0      
@@ -309,7 +332,6 @@ MODULE SUMMARY
        int42.asm.obj                0      2         0      
        int43.asm.obj                0      2         0      
        int44.asm.obj                0      2         0      
-       int46.asm.obj                0      2         0      
        int48.asm.obj                0      2         0      
        int49.asm.obj                0      2         0      
        int50.asm.obj                0      2         0      
@@ -325,24 +347,24 @@ MODULE SUMMARY
        int62.asm.obj                0      2         0      
        startup.c.obj                2      0         0      
     +--+----------------------------+------+---------+---------+
-       Total:                       1590   58        0      
+       Total:                       1590   56        0      
                                                             
        Stack:                       0      0         160    
        Linker Generated:            0      40        0      
     +--+----------------------------+------+---------+---------+
-       Grand Total:                 3062   210       182    
+       Grand Total:                 3792   247       186    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00008c8a records: 2, size/record: 8, table size: 16
-	.bss: load addr=00008c7e, load size=00000006 bytes, run addr=00002400, run size=00000014 bytes, compression=zero_init
-	.data: load addr=00008c84, load size=00000006 bytes, run addr=00002414, run size=00000002 bytes, compression=lzss
+__TI_cinit_table @ 00008f8a records: 2, size/record: 8, table size: 16
+	.bss: load addr=00008f7e, load size=00000006 bytes, run addr=00002400, run size=00000018 bytes, compression=zero_init
+	.data: load addr=00008f84, load size=00000006 bytes, run addr=00002418, run size=00000002 bytes, compression=lzss
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00008c72 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 00008f72 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_lzss
 	index: 2, handler: __TI_decompress_none
@@ -382,7 +404,10 @@ address   name
 00000752  ADC10MEM0                              
 00000753  ADC10MEM0_H                            
 00000752  ADC10MEM0_L                            
-00008be4  C$$EXIT                                
+00008e7c  AX12_init                              
+00008ad8  AX12_motorControl                      
+00002414  Byte_Recibido                          
+00008eb8  C$$EXIT                                
 000008c0  CBCTL0                                 
 000008c1  CBCTL0_H                               
 000008c0  CBCTL0_L                               
@@ -459,6 +484,7 @@ address   name
 0000050e  DMAIV                                  
 0000050f  DMAIV_H                                
 0000050e  DMAIV_L                                
+00002415  DatoLeido_UART                         
 00000140  FCTL1                                  
 00000141  FCTL1_H                                
 00000140  FCTL1_L                                
@@ -689,7 +715,8 @@ address   name
 000004b6  RTCYEAR                                
 000004b7  RTCYEAR_H                              
 000004b6  RTCYEAR_L                              
-00002412  RXByteCtr                              
+00002416  RXByteCtr                              
+000081fc  RxPacket                               
 00000100  SFRIE1                                 
 00000101  SFRIE1_H                               
 00000100  SFRIE1_L                               
@@ -744,6 +771,8 @@ address   name
 0000019a  SYSUNIV                                
 0000019b  SYSUNIV_H                              
 0000019a  SYSUNIV_L                              
+00008e90  Sentit_Dades_Rx                        
+00008e98  Sentit_Dades_Tx                        
 00000352  TA0CCR0                                
 00000354  TA0CCR1                                
 00000356  TA0CCR2                                
@@ -796,7 +825,8 @@ address   name
 000003e0  TB0EX0                                 
 000003ee  TB0IV                                  
 000003d0  TB0R                                   
-00002413  TXByteCtr                              
+00002417  TXByteCtr                              
+000085d2  TxPacket                               
 000005d0  UCA0ABCTL                              
 000005c6  UCA0BRW                                
 000005c7  UCA0BRW_H                              
@@ -1032,20 +1062,21 @@ address   name
 00000932  USBVECINT                              
 00000933  USBVECINT_H                            
 00000932  USBVECINT_L                            
-00008568  USCI_B1_ISR                            
+00008d84  USCI_A1_ISR                            
+000086de  USCI_B1_ISR                            
 0000015c  WDTCTL                                 
 0000015d  WDTCTL_H                               
 0000015c  WDTCTL_L                               
 00003400  __STACK_END                            
 000000a0  __STACK_SIZE                           
-00008c8a  __TI_CINIT_Base                        
-00008c9a  __TI_CINIT_Limit                       
-00008c72  __TI_Handler_Table_Base                
-00008c7e  __TI_Handler_Table_Limit               
-00008bd4  __TI_ISR_TRAP                          
-000085da  __TI_auto_init_nobinit_nopinit_hold_wdt
+00008f8a  __TI_CINIT_Base                        
+00008f9a  __TI_CINIT_Limit                       
+00008f72  __TI_Handler_Table_Base                
+00008f7e  __TI_Handler_Table_Limit               
+00008ea0  __TI_ISR_TRAP                          
+00008750  __TI_auto_init_nobinit_nopinit_hold_wdt
 0000810e  __TI_decompress_lzss                   
-00008866  __TI_decompress_none                   
+00008a24  __TI_decompress_none                   
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -1069,72 +1100,81 @@ address   name
 0000fffa  __TI_int61                             
 0000fffc  __TI_int62                             
 ffffffff  __TI_pprof_out_hndl                    
-000081fc  __TI_printfi_minimal                   
+000082e2  __TI_printfi_minimal                   
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
-000087ea  __TI_zero_init_nomemset                
+000089a8  __TI_zero_init_nomemset                
 ffffffff  __c_args__                             
-0000876a  __memcpy_far                           
-00008afc  __mspabi_divu                          
-00008ace  __mspabi_mpyi_f5hw                     
-00008a0e  __mspabi_mpyl_f5hw                     
-00008afc  __mspabi_remu                          
-00008860  __mspabi_srll_1                        
-0000883c  __mspabi_srll_10                       
-00008838  __mspabi_srll_11                       
-00008834  __mspabi_srll_12                       
-00008830  __mspabi_srll_13                       
-0000882c  __mspabi_srll_14                       
-00008828  __mspabi_srll_15                       
-0000885c  __mspabi_srll_2                        
-00008858  __mspabi_srll_3                        
-00008854  __mspabi_srll_4                        
-00008850  __mspabi_srll_5                        
-0000884c  __mspabi_srll_6                        
-00008848  __mspabi_srll_7                        
-00008844  __mspabi_srll_8                        
-00008840  __mspabi_srll_9                        
-00008a32  _c_int00_noargs                        
+00008928  __memcpy_far                           
+00008d6e  __mspabi_divu                          
+00008d56  __mspabi_mpyi_f5hw                     
+00008c78  __mspabi_mpyl_f5hw                     
+00008d6e  __mspabi_remu                          
+00008a1e  __mspabi_srll_1                        
+000089fa  __mspabi_srll_10                       
+000089f6  __mspabi_srll_11                       
+000089f2  __mspabi_srll_12                       
+000089ee  __mspabi_srll_13                       
+000089ea  __mspabi_srll_14                       
+000089e6  __mspabi_srll_15                       
+00008a1a  __mspabi_srll_2                        
+00008a16  __mspabi_srll_3                        
+00008a12  __mspabi_srll_4                        
+00008a0e  __mspabi_srll_5                        
+00008a0a  __mspabi_srll_6                        
+00008a06  __mspabi_srll_7                        
+00008a02  __mspabi_srll_8                        
+000089fe  __mspabi_srll_9                        
+00008cba  _c_int00_noargs                        
 0000fffe  _reset_vector                          
 00003360  _stack                                 
-00008bf4  _system_post_cinit                     
-00008bf0  _system_pre_init                       
-00008be4  abort                                  
-00008bbc  adc10_isr                              
-00008948  adc_conversion                         
-00008b12  adc_init                               
-000089c2  adc_read                               
-00008bdc  buttons_en_irq                         
-00008718  buttons_init                           
-00008bea  buttons_lastPressed                    
-00002408  counter                                
-00008912  i2c_init                               
-000089e8  i2c_send                               
-00008a4e  lcd_2ndLineShift                       
-00008a6a  lcd_clearDisplay                       
-00008644  lcd_init                               
-00008b4c  lcd_reset                              
-00008b92  lcd_resetPinInit                       
-00008b82  lcd_sendLine                           
-00008bc8  ldrs_init                              
-00008b5e  ldrs_readVoltage                       
-00002414  lecture                                
-00008ab6  main                                   
-00008a84  memccpy                                
-00008b70  memcpy                                 
-00008b26  memset                                 
-000084ec  port1_isr                              
-00008456  robot_calibADC                         
-000086ae  robot_changeMenu                       
-00008ae6  robot_init                             
-000087aa  robot_mainMenu                         
-000083a2  robot_showMenu                         
-000088a2  sprintf                                
-00008ba0  strlen                                 
-00008972  timer0_A0_ISR                          
-00008bae  timers_init                            
-0000899a  ucs_cfg_init                           
-000088da  wait_ms                                
+00008ece  _system_post_cinit                     
+00008eca  _system_pre_init                       
+00008eb8  abort                                  
+00008e58  adc10_isr                              
+00008bb2  adc_conversion                         
+00008d98  adc_init                               
+00008c2c  adc_read                               
+00008ea8  buttons_en_irq                         
+0000888e  buttons_init                           
+00008ebe  buttons_lastPressed                    
+00008b48  i2c_init                               
+00008c52  i2c_send                               
+00008cd6  lcd_2ndLineShift                       
+00008cf2  lcd_clearDisplay                       
+000087ba  lcd_init                               
+00008dd2  lcd_reset                              
+00008e3c  lcd_resetPinInit                       
+00008e2c  lcd_sendLine                           
+00008e64  ldrs_init                              
+00008de4  ldrs_readVoltage                       
+00002418  lecture                                
+00008d3e  main                                   
+00008d0c  memccpy                                
+00008df6  memcpy                                 
+00008dac  memset                                 
+00008662  port1_isr                              
+0000853c  robot_calibADC                         
+00008824  robot_changeMenu                       
+00008a60  robot_init                             
+00008968  robot_mainMenu                         
+00008488  robot_showMenu                         
+00008b7e  setAngle                               
+00008b10  sprintf                                
+00008e4a  strlen                                 
+00008bdc  timer0_A0_ISR                          
+00002412  timer_mode                             
+00008e08  timers_init                            
+00008e1a  timers_isTimeout                       
+00002408  timers_ms_counter                      
+00008c9c  timers_timeout_start                   
+00008eb0  timers_timeout_stop                    
+00008e86  uart_getDatoLeido                      
+000088e0  uart_init                              
+00008ec4  uart_isByte_Recibido                   
+00008e70  uart_send_byte                         
+00008c04  ucs_cfg_init                           
+00008a9c  wait_ms                                
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1820,83 +1860,101 @@ address   name
 000023fd  USBIEPBBAY_7                           
 000023fe  USBIEPBCTY_7                           
 000023ff  USBIEPSIZXY_7                          
-00002408  counter                                
+00002408  timers_ms_counter                      
 0000240e  PRxData                                
 00002410  PTxData                                
-00002412  RXByteCtr                              
-00002413  TXByteCtr                              
-00002414  lecture                                
+00002412  timer_mode                             
+00002414  Byte_Recibido                          
+00002415  DatoLeido_UART                         
+00002416  RXByteCtr                              
+00002417  TXByteCtr                              
+00002418  lecture                                
 00003360  _stack                                 
 00003400  __STACK_END                            
 0000810e  __TI_decompress_lzss                   
-000081fc  __TI_printfi_minimal                   
-000083a2  robot_showMenu                         
-00008456  robot_calibADC                         
-000084ec  port1_isr                              
-00008568  USCI_B1_ISR                            
-000085da  __TI_auto_init_nobinit_nopinit_hold_wdt
-00008644  lcd_init                               
-000086ae  robot_changeMenu                       
-00008718  buttons_init                           
-0000876a  __memcpy_far                           
-000087aa  robot_mainMenu                         
-000087ea  __TI_zero_init_nomemset                
-00008828  __mspabi_srll_15                       
-0000882c  __mspabi_srll_14                       
-00008830  __mspabi_srll_13                       
-00008834  __mspabi_srll_12                       
-00008838  __mspabi_srll_11                       
-0000883c  __mspabi_srll_10                       
-00008840  __mspabi_srll_9                        
-00008844  __mspabi_srll_8                        
-00008848  __mspabi_srll_7                        
-0000884c  __mspabi_srll_6                        
-00008850  __mspabi_srll_5                        
-00008854  __mspabi_srll_4                        
-00008858  __mspabi_srll_3                        
-0000885c  __mspabi_srll_2                        
-00008860  __mspabi_srll_1                        
-00008866  __TI_decompress_none                   
-000088a2  sprintf                                
-000088da  wait_ms                                
-00008912  i2c_init                               
-00008948  adc_conversion                         
-00008972  timer0_A0_ISR                          
-0000899a  ucs_cfg_init                           
-000089c2  adc_read                               
-000089e8  i2c_send                               
-00008a0e  __mspabi_mpyl_f5hw                     
-00008a32  _c_int00_noargs                        
-00008a4e  lcd_2ndLineShift                       
-00008a6a  lcd_clearDisplay                       
-00008a84  memccpy                                
-00008ab6  main                                   
-00008ace  __mspabi_mpyi_f5hw                     
-00008ae6  robot_init                             
-00008afc  __mspabi_divu                          
-00008afc  __mspabi_remu                          
-00008b12  adc_init                               
-00008b26  memset                                 
-00008b4c  lcd_reset                              
-00008b5e  ldrs_readVoltage                       
-00008b70  memcpy                                 
-00008b82  lcd_sendLine                           
-00008b92  lcd_resetPinInit                       
-00008ba0  strlen                                 
-00008bae  timers_init                            
-00008bbc  adc10_isr                              
-00008bc8  ldrs_init                              
-00008bd4  __TI_ISR_TRAP                          
-00008bdc  buttons_en_irq                         
-00008be4  C$$EXIT                                
-00008be4  abort                                  
-00008bea  buttons_lastPressed                    
-00008bf0  _system_pre_init                       
-00008bf4  _system_post_cinit                     
-00008c72  __TI_Handler_Table_Base                
-00008c7e  __TI_Handler_Table_Limit               
-00008c8a  __TI_CINIT_Base                        
-00008c9a  __TI_CINIT_Limit                       
+000081fc  RxPacket                               
+000082e2  __TI_printfi_minimal                   
+00008488  robot_showMenu                         
+0000853c  robot_calibADC                         
+000085d2  TxPacket                               
+00008662  port1_isr                              
+000086de  USCI_B1_ISR                            
+00008750  __TI_auto_init_nobinit_nopinit_hold_wdt
+000087ba  lcd_init                               
+00008824  robot_changeMenu                       
+0000888e  buttons_init                           
+000088e0  uart_init                              
+00008928  __memcpy_far                           
+00008968  robot_mainMenu                         
+000089a8  __TI_zero_init_nomemset                
+000089e6  __mspabi_srll_15                       
+000089ea  __mspabi_srll_14                       
+000089ee  __mspabi_srll_13                       
+000089f2  __mspabi_srll_12                       
+000089f6  __mspabi_srll_11                       
+000089fa  __mspabi_srll_10                       
+000089fe  __mspabi_srll_9                        
+00008a02  __mspabi_srll_8                        
+00008a06  __mspabi_srll_7                        
+00008a0a  __mspabi_srll_6                        
+00008a0e  __mspabi_srll_5                        
+00008a12  __mspabi_srll_4                        
+00008a16  __mspabi_srll_3                        
+00008a1a  __mspabi_srll_2                        
+00008a1e  __mspabi_srll_1                        
+00008a24  __TI_decompress_none                   
+00008a60  robot_init                             
+00008a9c  wait_ms                                
+00008ad8  AX12_motorControl                      
+00008b10  sprintf                                
+00008b48  i2c_init                               
+00008b7e  setAngle                               
+00008bb2  adc_conversion                         
+00008bdc  timer0_A0_ISR                          
+00008c04  ucs_cfg_init                           
+00008c2c  adc_read                               
+00008c52  i2c_send                               
+00008c78  __mspabi_mpyl_f5hw                     
+00008c9c  timers_timeout_start                   
+00008cba  _c_int00_noargs                        
+00008cd6  lcd_2ndLineShift                       
+00008cf2  lcd_clearDisplay                       
+00008d0c  memccpy                                
+00008d3e  main                                   
+00008d56  __mspabi_mpyi_f5hw                     
+00008d6e  __mspabi_divu                          
+00008d6e  __mspabi_remu                          
+00008d84  USCI_A1_ISR                            
+00008d98  adc_init                               
+00008dac  memset                                 
+00008dd2  lcd_reset                              
+00008de4  ldrs_readVoltage                       
+00008df6  memcpy                                 
+00008e08  timers_init                            
+00008e1a  timers_isTimeout                       
+00008e2c  lcd_sendLine                           
+00008e3c  lcd_resetPinInit                       
+00008e4a  strlen                                 
+00008e58  adc10_isr                              
+00008e64  ldrs_init                              
+00008e70  uart_send_byte                         
+00008e7c  AX12_init                              
+00008e86  uart_getDatoLeido                      
+00008e90  Sentit_Dades_Rx                        
+00008e98  Sentit_Dades_Tx                        
+00008ea0  __TI_ISR_TRAP                          
+00008ea8  buttons_en_irq                         
+00008eb0  timers_timeout_stop                    
+00008eb8  C$$EXIT                                
+00008eb8  abort                                  
+00008ebe  buttons_lastPressed                    
+00008ec4  uart_isByte_Recibido                   
+00008eca  _system_pre_init                       
+00008ece  _system_post_cinit                     
+00008f72  __TI_Handler_Table_Base                
+00008f7e  __TI_Handler_Table_Limit               
+00008f8a  __TI_CINIT_Base                        
+00008f9a  __TI_CINIT_Limit                       
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -1925,4 +1983,4 @@ ffffffff  __TI_prof_data_size
 ffffffff  __TI_prof_data_start                   
 ffffffff  __c_args__                             
 
-[783 symbols]
+[801 symbols]

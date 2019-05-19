@@ -19,6 +19,12 @@
 
 
 // ----------------------------------- PUBLIC METHODS -----------------------------
+void timers_timeout_start(uint32_t delay);
+
+void timers_timeout_stop(void);
+
+uint8_t timers_isTimeout(void);
+
 void timers_init(void);
 
 void wait_ms(uint32_t delay);
