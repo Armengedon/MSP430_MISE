@@ -1,12 +1,12 @@
 /*
- * adc.h
+ * wdg.h
  *
- *  Created on: 15 may. 2019
+ *  Created on: 18 jun. 2019
  *      Author: Jordi
  */
 
-#ifndef SRC_HAL_ADC_H_
-#define SRC_HAL_ADC_H_
+#ifndef SRC_HAL_WDG_H_
+#define SRC_HAL_WDG_H_
 
 // ------------------------------------- INCLUDES -------------------------------------
 
@@ -17,18 +17,10 @@
 
 // ------------------------------------- TYPEDEFS -------------------------------------
 
-typedef enum {
-    CHANNEL_1 = ADC10INCH_1, //01 = 1
-    CHANNEL_2 = ADC10INCH_2, //10 = 2
-    CHANNEL_10 = ADC10INCH_10, //10 = 2
-}channel_t;
-
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-uint32_t adc_conversion(uint16_t lecture);
+void wdg_restart(void);
 
-uint16_t adc_read(channel_t);
+void wdg_stop(void);
 
-void adc_init(void);
-
-#endif /* SRC_HAL_ADC_H_ */
+#endif /* SRC_HAL_WDG_H_ */

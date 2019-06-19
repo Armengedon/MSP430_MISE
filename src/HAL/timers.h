@@ -19,14 +19,18 @@
 
 
 // ----------------------------------- PUBLIC METHODS -----------------------------
-void timers_timeout_start(uint32_t delay);
+void timerA_timeout_start(uint32_t delay);
 
-void timers_timeout_stop(void);
+void timerA_timeout_stop(void);
+
+uint32_t timerA1_1_startCapture(void);
 
 uint8_t timers_isTimeout(void);
 
 void timers_init(void);
 
 void wait_ms(uint32_t delay);
+
+void wait_us(uint32_t delay);
 
 #endif /* SRC_TIMERS_H_ */

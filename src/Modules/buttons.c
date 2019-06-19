@@ -22,13 +22,11 @@ uint8_t pressed_read;
 // ----------------------------- PRIVATE METHODS PROTOTYPES ---------------------------
 
 // ----------------------------------- PRIVATE METHODS --------------------------------
-void buttons_dis_irq(void)
-{
+void buttons_dis_irq(void) {
     P1IE &= ~(btn_cnl | btn_sel | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
 }
 
-void buttons_en_irq(void)
-{
+void buttons_en_irq(void) {
     P1IE |= (btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
 }
 
@@ -42,28 +40,7 @@ btn_t buttons_lastPressed(void) {
     return pressed;
 }
 
-void buttons_init(void)
-{
-    /* init all buttons to output 0 to save power */
-    P1DIR = 0xFF;
-    P1OUT = 0x00;
-
-    P2DIR = 0xFF;
-    P2OUT = 0x00;
-
-    P3DIR = 0xFF;
-    P3OUT = 0x00;
-
-    P4DIR = 0xFF;
-    P4OUT = 0x00;
-
-    P5DIR = 0xFF;
-    P5OUT = 0x00;
-
-    P6DIR = 0xFF;
-    P6OUT = 0x00;
-    /* -----------------------------------------------*/
-
+void buttons_init(void) {
     P1SEL &= ~(btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
     P1DIR &= ~(btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
     P1REN |= (btn_sel | btn_cnl | jtk_up | jtk_dwn | jtk_rgt | jtk_lft);
@@ -73,8 +50,7 @@ void buttons_init(void)
 }
 
 #pragma vector = PORT1_VECTOR
-__interrupt void port1_isr(void)
-{
+__interrupt void port1_isr(void) {
     volatile uint8_t flags_iv = P1IV;
     P1IE &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5);
     switch (flags_iv)

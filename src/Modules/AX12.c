@@ -9,9 +9,11 @@
 
 #include <msp430.h>
 #include <string.h>
+#include <stdio.h>
 #include <HAL/uart.h>
 #include <HAL/timers.h>
 #include <Modules/AX12.h>
+#include <Modules/lcd.h>
 
 // ------------------------------------- DEFINES --------------------------------------
 
@@ -19,7 +21,7 @@
 #define AX12_CWANGLE_ADDR       0x06
 #define AX12_LED_ADDR           0x19
 #define AX12_MOV_SPEED_ADDR     0x20
-
+#define AX12_TEMP_ADDR          0x2B
 
 
 // ------------------------------------- TYPEDEFS -------------------------------------
@@ -42,11 +44,58 @@ struct RxReturn RxPacket(void);
 
 byte TxPacket(byte bID, byte bParameterLength, byte bInstruction, byte Parametros[16]);
 
-void setAngle(void);
+void AX12_setAngle(void);
 
-
+void AX12_readError(byte error);
 
 // ----------------------------------- PRIVATE METHODS --------------------------------
+
+void AX12_readError(byte error) {
+    uint8_t buffer[16] = "@";
+
+    lcd_clearDisplay();
+
+    if (error & BIT0) {
+        sprintf((char *) buffer, "%s%s", buffer, "Vin,");  //prepare char pointer to send to the lcd
+        wait_ms(3);
+    }
+    if (error & BIT1) {
+        sprintf((char *) buffer, "%s%s", buffer, "ºlim,");
+        wait_ms(3);
+    }
+    if (error  & BIT2) {
+        sprintf((char *) buffer, "%s%s", buffer, "ºC,");
+        wait_ms(3);
+    }
+    if (error & BIT3) {
+        sprintf((char *) buffer, "%s%s", buffer, "Range,");
+        wait_ms(3);
+    }
+    if (error & BIT4) {
+        sprintf((char *) buffer, "%s%s", buffer, "Chk,");
+        wait_ms(3);
+    }
+    if (error & BIT5) {
+        sprintf((char *) buffer, "%s%s", buffer, "Ovload,");
+        wait_ms(3);
+    }
+    if (error  & BIT6) {
+        sprintf((char *) buffer, "%s%s", buffer, "Ins,");
+        wait_ms(3);
+    }
+
+    if (error & 0xFF) {
+        sprintf((char *) buffer, "@AX12 TIMEOUT");
+    }
+
+    lcd_sendLine(buffer);
+    while(1) {
+        lcd_shiftLeft();
+        wait_ms(200);
+    }
+
+}
+
 
 /* funcions per canviar el sentit de les comunicacions */
 void Sentit_Dades_Rx(void) {
@@ -67,7 +116,7 @@ struct RxReturn RxPacket(void) {
     bLength = 0;
     Sentit_Dades_Rx();                      //Posem el sentit de les dades en recepcio
     for(bCount = 0; bCount<4; bCount++) {      //Primer agafem els 5 primers bytes(2 de inici de tram, ID i longitud i l'error
-        timers_timeout_start(80);
+        timerA_timeout_start(80);
         while(!uart_isByte_Recibido()) {              //Mentre esperem les dades vigilem no superar el temps
             Rx_time_out = timers_isTimeout();     //En aquest cas hem volgut reduir el temps al màxim per buscar un equilibri
             if(Rx_time_out) break;           //Si hi ha timeout surt del bucle
@@ -77,7 +126,7 @@ struct RxReturn RxPacket(void) {
     }
 
     if(!Rx_time_out) {
-        timers_timeout_start(50);
+        timerA_timeout_start(50);
         while(!uart_isByte_Recibido()) {
             Rx_time_out = timers_isTimeout();
             if(Rx_time_out)break;
@@ -89,7 +138,7 @@ struct RxReturn RxPacket(void) {
     if(!Rx_time_out){
 
         for(bCount = 0; bCount<bLength; bCount++){    //En aquest cas fem el mateix amb la resta de la trama
-            timers_timeout_start(50);               //Per a la proxima sesió intentarem fer que es generi el struct
+            timerA_timeout_start(50);
             while(!uart_isByte_Recibido()) {
                 Rx_time_out = timers_isTimeout();
                 if(Rx_time_out)break;
@@ -99,7 +148,7 @@ struct RxReturn RxPacket(void) {
         }
     }
     if (Rx_time_out) respuesta.error = statusPacket_timeout;
-    timers_timeout_stop();
+    timerA_timeout_stop();
     return respuesta;
 }
 
@@ -130,28 +179,34 @@ byte TxPacket(byte bID, byte bParameterLength, byte bInstruction, byte Parametro
     return (bPacketLength);
 }
 
-void setAngle(void) {
-    RxReturn respuesta;
+void AX12_setAngle(void) {
     byte Parametros[16] = {AX12_CWANGLE_ADDR,0x00,0x00,0x00,0x00};      //Per fer un "gir infinit" hem de inicialitzar el CW i CCW a 0.
                                                                         //L'adreça dels angles ocupa 4 bytes, i per tant li enviem 1+4 parametres
     TxPacket(AX12_BROADCAST, 5, AX12_WRITE,Parametros);        //Fem un broadcast, els parametres son 5, la funcio es escriure al registre
-    respuesta = RxPacket();
-    if (respuesta.error){
-        //TODO error routine
-    }
 }
 
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
+uint8_t AX12_readTemp(uint8_t moduleAddr) {
+    RxReturn respuesta;
+    byte Parametros[16] = {AX12_TEMP_ADDR ,  1};            //Preparem els parametres de entrada, addreça i quans bytes volem llegir
+    TxPacket(moduleAddr, 2, AX12_READ ,Parametros);   //Enviem la trama (0xfe per enviarho a tots els motors), 2 pel numero de parametres, i 3 la instruccio write
+    respuesta = RxPacket();                     //Agafem el status packet PERO demoment no el tractem
+    if (respuesta.error){
+        AX12_readError(respuesta.error);
+    }
+    return respuesta.parametres[0];
+}
+
 //Funcio per encendre els leds dels motors
 void AX12_turnOnLeds(uint8_t moduleAddr) {
     RxReturn respuesta;
-    byte Parametros[16] = {AX12_LED_ADDR ,  1};            //Preparem els parametres de entrada, 25 = 0x19 (adreça del led) i 1 per encendrel
-    TxPacket(moduleAddr, 2, AX12_WRITE ,Parametros);   //Enviem la trama (0xfe per enviarho a tots els motors), 2 pel numero de parametres, i 3 la instruccio write
+    byte Parametros[16] = {AX12_LED_ADDR ,  1};            //Preparem els parametres de entrada,
+    TxPacket(moduleAddr, 2, AX12_READ ,Parametros);   //Enviem la trama (0xfe per enviarho a tots els motors), 2 pel numero de parametres, i 3 la instruccio write
     respuesta = RxPacket();                     //Agafem el status packet PERO demoment no el tractem
     if (respuesta.error){
-        //TODO error routine
+        AX12_readError(respuesta.error);
     }
 }
 
@@ -161,7 +216,7 @@ void AX12_turnOffLeds(uint8_t moduleAddr) {
     TxPacket(moduleAddr, 2, AX12_WRITE ,Parametros);   //Enviem la trama (0xfe per enviarho a tots els motors), 2 pel numero de parametres, i 3 la instruccio write
     respuesta = RxPacket();                     //Agafem el status packet PERO demoment no el tractem
     if (respuesta.error){
-        //TODO error routine
+        AX12_readError(respuesta.error);
     }
 }
 
@@ -173,12 +228,12 @@ void AX12_motorControl(uint8_t moduleAddr, uint16_t direction, uint16_t speed){
     Parametros[2] = (speed >> 8) | direction;
     TxPacket(moduleAddr, 3, AX12_WRITE,Parametros);
     respuesta = RxPacket();
-    if (respuesta.error){
-        //TODO errror routine
+    if (AX12_BROADCAST != moduleAddr & respuesta.error){
+        AX12_readError(respuesta.error);
     }
 }
 
 void AX12_init(void) {
     uart_init();
-    setAngle();
+    AX12_setAngle();
 }

@@ -27,6 +27,8 @@ void lcd_clearDisplay(void);
 
 void lcd_2ndLineShift(void);
 
+void lcd_shiftLeft(void);
+
 void lcd_sendLine(uint8_t *buffer);
 
 void lcd_init(void);

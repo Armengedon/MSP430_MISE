@@ -19,6 +19,7 @@ typedef enum {
     MENU_CALIB_LDRS = 0,
     MENU_SEEK_LIGHT,
     MENU_MANUAL_OP,
+    MENU_MEAS_DIST,
 } menuSelection_t;
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------

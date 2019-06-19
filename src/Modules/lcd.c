@@ -18,6 +18,7 @@
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 #define LCD_I2C_ADDR                 0x3E
 #define LCD_CMD_LENGTH              2
+#define LCD_STR_LENGTH              16
 #define LCD_2ND_LINE_ADDR           0x40
 
 
@@ -29,9 +30,6 @@
 // ----------------------------- PRIVATE METHODS PROTOTYPES ---------------------------
 
 void lcd_reset(void);
-
-void lcd_send(uint8_t *buffer);
-
 
 // ----------------------------------- PRIVATE METHODS --------------------------------
 
@@ -46,10 +44,6 @@ void lcd_resetPinInit() {
     P6SEL &= ~(BIT0);
     P6DIR |= BIT0;
     P6OUT |= BIT0;
-}
-
-void lcd_send(uint8_t *buffer) {
-    i2c_send(LCD_I2C_ADDR, buffer, strlen((const char *) buffer));
 }
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
@@ -72,8 +66,17 @@ void lcd_2ndLineShift(void) {
     i2c_send(LCD_I2C_ADDR, buffer, LCD_CMD_LENGTH);
 }
 
+void lcd_shiftLeft(void) {
+    uint8_t buffer[LCD_CMD_LENGTH];
+
+    buffer[0] = 0x00;
+    buffer[1] = BIT4 | BIT3 | BIT2;
+
+    i2c_send(LCD_I2C_ADDR, buffer, LCD_CMD_LENGTH);
+}
+
 void lcd_sendLine(uint8_t *buffer) {
-    i2c_send(LCD_I2C_ADDR, buffer, 16);
+    i2c_send(LCD_I2C_ADDR, buffer, LCD_STR_LENGTH);
 }
 
 void lcd_init() {
@@ -112,5 +115,6 @@ void lcd_init() {
     i2c_send(0x3E, buffer_long, 9);
 
     wait_ms(10);
+    wdg_restart();
 
 }

@@ -10,12 +10,14 @@
 #include "msp430.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <HAL/wdg.h>
 #include <HAL/ucs_cfg.h>
 #include <HAL/timers.h>
 #include <Modules/buttons.h>
 #include <Modules/lcd.h>
 #include <Modules/ldrs.h>
 #include <Modules/AX12.h>
+#include <Modules/hcsr04.h>
 #include <Robot/robot.h>
 
 
@@ -55,23 +57,54 @@ void robot_seekLight(void);
 void robot_calibADC(void);
 
 /**
+ * Enter the manual operation function. In this menu we can control the robot by using the joystick, to exit to the
+ * main menu again as with the other functions you just have to press the cancel button
+ */
+void robot_manualOp(void);
+
+/**
  * Decides which menu to go depending on the last button pressed and the actual menu we are in
  */
 void robot_changeMenu(void);
 
 // ----------------------------------- PRIVATE METHODS --------------------------------
 
+void robot_measDist(void) {
+    uint8_t buffer[20] = {0};
+
+    while (BTN_CNL != btn_prsd) {
+        wdg_restart();
+//        wait_ms(30);
+        lcd_clearDisplay();
+
+        wait_ms(5);//If this is removed instead of LDR.... the lcd shows LR....
+
+        sprintf((char *) buffer, "@Distance=  %dcm", (uint16_t) hcsr04_readDistance());  //prepare char pointer to send to the lcd
+
+        lcd_sendLine(buffer);
+
+        wait_ms(100);
+
+
+        btn_prsd = buttons_lastPressed();
+    }
+
+    robot_mainMenu();
+}
+
+
 void robot_calibADC(void) {
 
     uint8_t buffer[20] = {0};
 
     while (BTN_CNL != btn_prsd) {
-        wait_ms(30);
+        wdg_restart();
+//        wait_ms(30);
         lcd_clearDisplay();
 
         sprintf((char *) buffer, "@LDR LEFT  %dV", (uint16_t) ldrs_readVoltage(LDR_LFT));  //prepare char pointer to send to the lcd
 
-        wait_ms(10);//If this is removed instead of LDR.... the lcd shows LR....
+        wait_ms(5);//If this is removed instead of LDR.... the lcd shows LR....
 
         lcd_sendLine(buffer);
         lcd_2ndLineShift();
@@ -96,7 +129,7 @@ void robot_changeMenu() {
             break;
 
         case BTN_JTK_LFT:
-            robot_showMenu(MENU_MANUAL_OP);
+            robot_showMenu(MENU_MEAS_DIST);
             break;
 
         }
@@ -118,7 +151,7 @@ void robot_changeMenu() {
     case MENU_MANUAL_OP:
         switch (btn_prsd) {
         case BTN_JTK_RGT:
-            robot_showMenu(MENU_CALIB_LDRS);
+            robot_showMenu(MENU_MEAS_DIST);
             break;
 
         case BTN_JTK_LFT:
@@ -128,6 +161,20 @@ void robot_changeMenu() {
         }
 
         break;
+    case MENU_MEAS_DIST:
+        switch (btn_prsd) {
+        case BTN_JTK_RGT:
+            robot_showMenu(MENU_CALIB_LDRS);
+            break;
+
+        case BTN_JTK_LFT:
+            robot_showMenu(MENU_MANUAL_OP);
+            break;
+
+        }
+
+        break;
+
     default:
         break;
     }
@@ -163,6 +210,7 @@ void robot_seekLight(void) {
     int32_t lightDiffTHD = 200;
 
     while (BTN_CNL != btn_prsd) {
+        wdg_restart();
 
         wait_ms(20);
         lcd_clearDisplay();
@@ -184,7 +232,7 @@ void robot_seekLight(void) {
         leftLight = ldrs_readVoltage(LDR_LFT);
         rightLight = ldrs_readVoltage(LDR_RGT);
 
-        lightDiff = rightLight - leftLight;
+        lightDiff = leftLight - rightLight;
 
         robot_motorDecision(lightDiffTHD, lightDiff);
 
@@ -195,16 +243,53 @@ void robot_seekLight(void) {
     robot_mainMenu();
 }
 
+void robot_manualOp(void) {
+    wait_ms(20);
+    lcd_clearDisplay();
+    wait_ms(3);
+    lcd_sendLine("@-  MANUAL OP  -");  //prepare char pointer to send to the lcd
+
+    while (BTN_CNL != btn_prsd) {
+       wdg_restart();
+
+       if (BTN_JTK_UP == btn_prsd) {
+           AX12_motorControl(AX12_LEFT, AX12_LFT_FORWARD, AX12_SPD_MED);
+           AX12_motorControl(AX12_RIGHT, AX12_RGT_FORWARD, AX12_SPD_MED);
+           wait_ms(200);
+       } else if (BTN_JTK_DWN == btn_prsd){
+           AX12_motorControl(AX12_LEFT, AX12_LFT_BACKWARD, AX12_SPD_MED);
+           AX12_motorControl(AX12_RIGHT, AX12_RGT_BACKWARD, AX12_SPD_MED);
+           wait_ms(200);
+       } else if (BTN_JTK_RGT == btn_prsd){
+           AX12_motorControl(AX12_LEFT, AX12_LFT_FORWARD, AX12_SPD_MED);
+           AX12_motorControl(AX12_RIGHT, AX12_RGT_BACKWARD, AX12_SPD_MED);
+           wait_ms(200);
+       } else if (BTN_JTK_LFT == btn_prsd){
+           AX12_motorControl(AX12_LEFT, AX12_LFT_BACKWARD, AX12_SPD_MED);
+           AX12_motorControl(AX12_RIGHT, AX12_RGT_FORWARD, AX12_SPD_MED);
+           wait_ms(200);
+       } else {
+           AX12_motorControl(AX12_BROADCAST, AX12_LFT_FORWARD, AX12_SPD_STP);
+       }
+
+       btn_prsd = buttons_lastPressed();
+    }
+}
+
 
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
 void robot_mainMenu(void) {
+    AX12_motorControl(AX12_BROADCAST, AX12_LFT_FORWARD, AX12_SPD_STP);      //Stop motors at start. if the watchdog reaches the time limit it will restart
+                                                                            //and the motors need to be stoped.
     menuSelection = MENU_CALIB_LDRS;
     btn_prsd = buttons_lastPressed();
     robot_showMenu(menuSelection);
     while (BTN_SEL != btn_prsd) {
+        wdg_stop();
         __bis_SR_register(LPM0_bits | GIE);     //enter low power mode waiting for buttons to be pressed
+        wdg_restart();
         btn_prsd = buttons_lastPressed();
         robot_changeMenu();
     }
@@ -217,10 +302,16 @@ void robot_mainMenu(void) {
             robot_seekLight();
             break;
         case MENU_MANUAL_OP:
+            robot_manualOp();
             break;
+        case MENU_MEAS_DIST:
+            robot_measDist();
         default:
             break;
     }
+
+    wdg_restart();
+
 }
 
 
@@ -251,6 +342,10 @@ void robot_showMenu(menuSelection_t selection) {
         sprintf((char *) buffer, "@%c  MANUAL OP  ~", LCD_LFT_ARRW_CHAR);  //prepare char pointer to send to the lcd
         lcd_sendLine(buffer);
         break;
+    case MENU_MEAS_DIST:
+        sprintf((char *) buffer, "@%c  MEAS DIST  ~", LCD_LFT_ARRW_CHAR);  //prepare char pointer to send to the lcd
+        lcd_sendLine(buffer);
+        break;
     default:
         break;
     }
@@ -263,8 +358,16 @@ void robot_init(void) {
     ucs_cfg_init();
     timers_init();
     buttons_init();
+
+    __enable_interrupt();
+
+    wdg_restart();
+
     lcd_init();
     ldrs_init();
     AX12_init();
+    hcsr04_init();
+
+    wdg_restart();
 
 }

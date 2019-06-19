@@ -15,7 +15,7 @@
 #include <HAL/uart.h>
 
 // ------------------------------------- DEFINES --------------------------------------
-
+#define AX12_READ           0x02
 #define AX12_WRITE          0x03
 
 #define AX12_LEFT           0x01
@@ -38,6 +38,8 @@
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
 void stopMotors();
+
+uint8_t AX12_readTemp(uint8_t moduleAddr);
 
 void AX12_motorControl(uint8_t moduleAddr, uint16_t direction, uint16_t speed);
 

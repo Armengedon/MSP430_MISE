@@ -17,6 +17,7 @@ src/main.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/
 src/main.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/string.h
 src/main.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/_ti_config.h
 src/main.obj: C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/linkage.h
+src/main.obj: C:/Users/Jordi/Documents/Repos/MSP430_MISE/src/HAL/wdg.h
 src/main.obj: C:/Users/Jordi/Documents/Repos/MSP430_MISE/src/Robot/robot.h
 
 ../src/main.c: 
@@ -36,4 +37,5 @@ C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/sys/_stdint.h:
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/string.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/_ti_config.h: 
 C:/ti/ccs901/ccs/tools/compiler/ti-cgt-msp430_18.12.1.LTS/include/linkage.h: 
+C:/Users/Jordi/Documents/Repos/MSP430_MISE/src/HAL/wdg.h: 
 C:/Users/Jordi/Documents/Repos/MSP430_MISE/src/Robot/robot.h: 

@@ -71,11 +71,13 @@ void i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades) {
 #pragma vector = USCI_B1_VECTOR
 __interrupt void USCI_B1_ISR(void) {
     switch (__even_in_range(UCB1IV,12)) {
-    case 0: break;                                      // Vector 0: No interrupts
-    case 2: break;                                      // Vector 2: ALIFG
-    case 4: break;                                      // Vector 4: NACKIFG
-    case 6: break;                                      // Vector 6: STTIFG
-    case 8: break;                                      // Vector 8: STPIFG
+    case 0:                                      // Vector 0: No interrupts
+    case 2:                                      // Vector 2: ALIFG
+    case 4:                                      // Vector 4: NACKIFG
+    case 6:                                      // Vector 6: STTIFG
+    case 8:
+        __bic_SR_register_on_exit(LPM0_bits);       // Exit del mode baix consum LPM0, activa la CPU
+        break;                                      // Vector 8: STPIFG
     case 10:                                            // Vector 10: RXIFG
         RXByteCtr--;                                    // Decrement RX byte counter
         if (RXByteCtr) {
