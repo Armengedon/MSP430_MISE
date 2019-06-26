@@ -1,10 +1,3 @@
-/*
- * timers.c
- *
- *  Created on: 14 may. 2019
- *      Author: Jordi
- */
-
 // ------------------------------------- INCLUDES -------------------------------------
 
 #include "msp430.h"
@@ -66,7 +59,9 @@ uint32_t timerA1_1_startCapture(void) {
     TA1CTL |= TACLR;
     TA1CCTL1 |= CAP | CCIS_0 | SCS |CM_3 | CCIE;
     while (counter_finish == 0 || counter_start == 0);
-    return ((counter_finish - counter_start) >> 4 )/58;
+    /* As we have our timer at 16 Mhz we have to divide the result counting by 16 to reach a 1 count = 1 usec */
+    return ((counter_finish - counter_start) >> 4 )/58; // Formula: Distance in cm = (Time in uSec)/58
+                                                        //distance_cm = (CCR0 - counter)/58;
 }
 
 uint8_t timers_isTimeout(void) {
@@ -111,15 +106,13 @@ __interrupt void timer0_A0_ISR(void) {
 
 #pragma vector=TIMER1_A1_VECTOR
 __interrupt void timer1_A1_ISR(void) {
-    if (TA1CCTL1 & CCI) {          // Raising edge
-        counter_start = TA1CCR1;      // Copy counter to variable
+    if (TA1CCTL1 & CCI) {               // Raising edge
+        counter_start = TA1CCR1;        // Copy counter to variable
     } else if (TA1CCTL1 & COV) {
         counter_finish = 100;
         counter_start = 100;
-    } else {                    // Falling edge
+    } else {                            // Falling edge
         counter_finish = TA1CCR1;
-            // Formula: Distance in cm = (Time in uSec)/58
-//            distance_cm = (CCR0 - counter)/58;
     }
     TA1CCTL1 &= ~TAIFG;           // Clear interrupt flag - handled
 }

@@ -1,10 +1,3 @@
-/*
- * adc.h
- *
- *  Created on: 15 may. 2019
- *      Author: Jordi
- */
-
 #ifndef SRC_HAL_ADC_H_
 #define SRC_HAL_ADC_H_
 
@@ -25,10 +18,21 @@ typedef enum {
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
+/**
+ * Converts the passed parameter to a mV result
+ * @param lecture, value read from an adc
+ */
 uint32_t adc_conversion(uint16_t lecture);
 
-uint16_t adc_read(channel_t);
+/**
+ * Reads and returns the adc selected in a certain Channel
+ * @param channel, channel of the adc pin
+ */
+uint16_t adc_read(channel_t channel);
 
+/**
+ * Initialization of the adc peripheral
+ */
 void adc_init(void);
 
 #endif /* SRC_HAL_ADC_H_ */

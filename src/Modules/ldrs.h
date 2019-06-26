@@ -1,10 +1,3 @@
-/*
- * gpio_ldrs.h
- *
- *  Created on: 7 may. 2019
- *      Author: Jordi
- */
-
 #ifndef SRC_MODULES_LDRS_H_
 #define SRC_MODULES_LDRS_H_
 
@@ -24,8 +17,14 @@ typedef enum channel_t{
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
+/**
+ * Initialization of the ldrs module
+ */
 void ldrs_init(void);
 
+/**
+ * Reads the voltage of the selected ldr and returns it
+ */
 uint32_t ldrs_readVoltage(ldrChannel_t ldrToRead);
 
 #endif /* SRC_MODULES_LDRS_H_ */

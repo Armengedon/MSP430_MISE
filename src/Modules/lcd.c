@@ -1,16 +1,10 @@
-/*
- * lcd.c
- *
- *  Created on: 15 may. 2019
- *      Author: Jordi
- */
-
 // ------------------------------------- INCLUDES -------------------------------------
 
 #include <msp430.h>
 #include <string.h>
 #include <HAL/i2c.h>
 #include <HAL/timers.h>
+#include <HAL/wdg.h>
 #include <Modules/lcd.h>
 
 // ------------------------------------- DEFINES --------------------------------------
@@ -29,7 +23,15 @@
 
 // ----------------------------- PRIVATE METHODS PROTOTYPES ---------------------------
 
+/**
+ * Reset the lcd
+ */
 void lcd_reset(void);
+
+/**
+ * Initializes the pin of the reset
+ */
+void lcd_resetPinInit();
 
 // ----------------------------------- PRIVATE METHODS --------------------------------
 

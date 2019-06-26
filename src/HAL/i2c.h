@@ -1,10 +1,3 @@
-/*
- * i2c_lcd.h
- *
- *  Created on: 2 may. 2019
- *      Author: jarmengol
- */
-
 #ifndef SRC_I2C_LCD_H_
 #define SRC_I2C_LCD_H_
 
@@ -26,9 +19,14 @@ uint8_t dades_smbus[256];
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
-
+/**
+ * Initialization fo the i2c peripheral
+ */
 void i2c_init(void);
 
+/**
+ * Send a buffer of data to the selected address
+ */
 void i2c_send(uint8_t addr, uint8_t *buffer, uint8_t n_dades);
 
 #endif /* SRC_I2C_LCD_H_ */

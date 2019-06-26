@@ -1,10 +1,3 @@
-/*
- * AX12.c
- *
- *  Created on: 18 may. 2019
- *      Author: Jordi
- */
-
 // ------------------------------------- INCLUDES -------------------------------------
 
 #include <msp430.h>
@@ -36,16 +29,38 @@ typedef struct RxReturn{
 
 // ----------------------------- PRIVATE METHODS PROTOTYPES ---------------------------
 
+/**
+ * Change the data direction to Receive
+ */
 void Sentit_Dades_Rx(void);
 
+/**
+ * Change the data direction to transmit
+ */
 void Sentit_Dades_Tx(void);
 
+/**
+ * Function called to receive the status packet from the AX12 modules
+ */
 struct RxReturn RxPacket(void);
 
+/**
+ * Function called to transmit the packet to the AX12
+ * @param bID  identification of the module
+ * @param bParameterLength number of parameters to be sent
+ * @param bInstruction instruction code for the AX12
+ * @param Parametros array containing the parameters to be sent
+ */
 byte TxPacket(byte bID, byte bParameterLength, byte bInstruction, byte Parametros[16]);
 
+/**
+ * Sets the AX12 angle to 0 in order to achieve an infinite spin
+ */
 void AX12_setAngle(void);
 
+/**
+ * Reads the AX12 status paquet error and shows it in the lcd
+ */
 void AX12_readError(byte error);
 
 // ----------------------------------- PRIVATE METHODS --------------------------------
@@ -182,7 +197,7 @@ byte TxPacket(byte bID, byte bParameterLength, byte bInstruction, byte Parametro
 void AX12_setAngle(void) {
     byte Parametros[16] = {AX12_CWANGLE_ADDR,0x00,0x00,0x00,0x00};      //Per fer un "gir infinit" hem de inicialitzar el CW i CCW a 0.
                                                                         //L'adreça dels angles ocupa 4 bytes, i per tant li enviem 1+4 parametres
-    TxPacket(AX12_BROADCAST, 5, AX12_WRITE,Parametros);        //Fem un broadcast, els parametres son 5, la funcio es escriure al registre
+    TxPacket(AX12_BROADCAST, 5, AX12_WRITE,Parametros);                 //Fem un broadcast, els parametres son 5, la funcio es escriure al registre
 }
 
 
@@ -190,9 +205,9 @@ void AX12_setAngle(void) {
 
 uint8_t AX12_readTemp(uint8_t moduleAddr) {
     RxReturn respuesta;
-    byte Parametros[16] = {AX12_TEMP_ADDR ,  1};            //Preparem els parametres de entrada, addreça i quans bytes volem llegir
-    TxPacket(moduleAddr, 2, AX12_READ ,Parametros);   //Enviem la trama (0xfe per enviarho a tots els motors), 2 pel numero de parametres, i 3 la instruccio write
-    respuesta = RxPacket();                     //Agafem el status packet PERO demoment no el tractem
+    byte Parametros[16] = {AX12_TEMP_ADDR ,  1};         //Preparem els parametres de entrada, addreça i quans bytes volem llegir
+    TxPacket(moduleAddr, 2, AX12_READ ,Parametros);
+    respuesta = RxPacket();                             //Agafem el status packet PERO demoment no el tractem
     if (respuesta.error){
         AX12_readError(respuesta.error);
     }
@@ -202,9 +217,9 @@ uint8_t AX12_readTemp(uint8_t moduleAddr) {
 //Funcio per encendre els leds dels motors
 void AX12_turnOnLeds(uint8_t moduleAddr) {
     RxReturn respuesta;
-    byte Parametros[16] = {AX12_LED_ADDR ,  1};            //Preparem els parametres de entrada,
-    TxPacket(moduleAddr, 2, AX12_READ ,Parametros);   //Enviem la trama (0xfe per enviarho a tots els motors), 2 pel numero de parametres, i 3 la instruccio write
-    respuesta = RxPacket();                     //Agafem el status packet PERO demoment no el tractem
+    byte Parametros[16] = {AX12_LED_ADDR ,  1};       //Preparem els parametres de entrada,
+    TxPacket(moduleAddr, 2, AX12_READ ,Parametros);
+    respuesta = RxPacket();
     if (respuesta.error){
         AX12_readError(respuesta.error);
     }
@@ -212,9 +227,9 @@ void AX12_turnOnLeds(uint8_t moduleAddr) {
 
 void AX12_turnOffLeds(uint8_t moduleAddr) {
     RxReturn respuesta;
-    byte Parametros[16] = {AX12_LED_ADDR , 0};            //Preparem els parametres de entrada, 25 = 0x19 (adreça del led) i 1 per encendrel
-    TxPacket(moduleAddr, 2, AX12_WRITE ,Parametros);   //Enviem la trama (0xfe per enviarho a tots els motors), 2 pel numero de parametres, i 3 la instruccio write
-    respuesta = RxPacket();                     //Agafem el status packet PERO demoment no el tractem
+    byte Parametros[16] = {AX12_LED_ADDR , 0};
+    TxPacket(moduleAddr, 2, AX12_WRITE ,Parametros);   //Enviem la trama ,2 pel numero de parametres
+    respuesta = RxPacket();
     if (respuesta.error){
         AX12_readError(respuesta.error);
     }

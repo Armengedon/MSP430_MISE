@@ -1,10 +1,3 @@
-/*
- * wdg.h
- *
- *  Created on: 18 jun. 2019
- *      Author: Jordi
- */
-
 #ifndef SRC_HAL_WDG_H_
 #define SRC_HAL_WDG_H_
 

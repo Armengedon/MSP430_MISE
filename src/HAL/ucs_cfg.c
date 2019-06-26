@@ -1,11 +1,3 @@
-/*
- * ucs_cfg.c
- *
- *  Created on: 2 may. 2019
- *      Author: jarmengol
- */
-
-
 // ------------------------------------- INCLUDES -------------------------------------
 
 #include "msp430.h"

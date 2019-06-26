@@ -1,10 +1,3 @@
-/*
- * gpio_buttons.h
- *
- *  Created on: 7 may. 2019
- *      Author: Jordi
- */
-
 #ifndef SRC_MODULES_BUTTONS_H_
 #define SRC_MODULES_BUTTONS_H_
 
@@ -43,9 +36,14 @@ typedef enum btn_t{
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
+/**
+ * Returns the btn_t corresponding to the last button that was pressed
+ */
 btn_t buttons_lastPressed(void);
 
-
+/**
+ * Initialization of buttons
+ */
 void buttons_init(void);
 
 #endif /* SRC_MODULES_BUTTONS_H_ */

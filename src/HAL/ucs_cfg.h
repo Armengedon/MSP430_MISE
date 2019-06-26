@@ -1,10 +1,3 @@
-/*
- * ucs_cfg.h
- *
- *  Created on: 2 may. 2019
- *      Author: jarmengolS
- */
-
 #ifndef SRC_UCS_CFG_H_
 #define SRC_UCS_CFG_H_
 
@@ -20,6 +13,9 @@
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
+/**
+ * Initialization of ucs
+ */
 void ucs_cfg_init(void);
 
 #endif /* SRC_UCS_CFG_H_ */

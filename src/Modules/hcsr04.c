@@ -1,10 +1,3 @@
-/*
- * hcsr04.c
- *
- *  Created on: 21 may. 2019
- *      Author: Jordi
- */
-
 // ------------------------------------- INCLUDES -------------------------------------
 #include "msp430.h"
 #include <HAL/timers.h>
@@ -27,6 +20,7 @@
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
+
 uint32_t hcsr04_readDistance(void) {
     P4OUT |= TRIGGER;               //Trigger phase, 10 us of positive pulse
     wait_us(10);
@@ -34,9 +28,6 @@ uint32_t hcsr04_readDistance(void) {
 
     return timerA1_1_startCapture();
 }
-
-
-
 
 void hcsr04_init(void) {
     P4SEL &= ~(TRIGGER);

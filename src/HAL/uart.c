@@ -1,10 +1,3 @@
-/*
- * uart.c
- *
- *  Created on: 17 may. 2019
- *      Author: Jordi
- */
-
 // ------------------------------------- INCLUDES -------------------------------------
 #include "msp430.h"
 #include <stdint.h>

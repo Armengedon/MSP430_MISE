@@ -13,9 +13,8 @@
  */
 int main(void)
 {
-    wdg_stop();
+
     robot_init();
-    wdg_restart();
 
     while (1)
     {

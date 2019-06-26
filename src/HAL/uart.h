@@ -1,10 +1,3 @@
-/*
- * uart.h
- *
- *  Created on: 17 may. 2019
- *      Author: Jordi
- */
-
 #ifndef SRC_HAL_UART_H_
 #define SRC_HAL_UART_H_
 
@@ -23,14 +16,24 @@ typedef unsigned char byte;
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
+/**
+ * Send a byte of data throught the UART
+ */
 void uart_send_byte(byte TXData);
 
+/**
+ * Check and return if a byte is received
+ */
 uint8_t uart_isByte_Recibido(void);
 
+/**
+ * Receive data
+ */
 byte uart_getDatoLeido(void);
 
-byte TxPacket(byte bID, byte bParameterLength, byte bInstruction, byte Parametros[16]);
-
+/**
+ *Initialization of UART peripheral
+ */
 void uart_init(void);
 
 

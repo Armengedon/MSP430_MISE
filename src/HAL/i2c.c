@@ -1,11 +1,3 @@
-/*
- * i2c_lcd.c
- *
- *  Created on: 2 may. 2019
- *      Author: jarmengol
- */
-
-
 // ------------------------------------- INCLUDES -------------------------------------
 
 #include <msp430.h>
@@ -27,15 +19,7 @@
 
 // ----------------------------- PRIVATE METHODS PROTOTYPES ---------------------------
 
-void i2c_lcd_reset(void);
-
 // ----------------------------------- PRIVATE METHODS --------------------------------
-
-void i2c_lcd_reset() {
-    P6OUT &= ~(BIT0);
-    wait_ms(2);
-    P6OUT |= BIT0;
-}
 
 void i2c_init() {
     /* Inisialisation of reset pin */

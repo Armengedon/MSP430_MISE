@@ -1,10 +1,3 @@
-/*
- * gpio_buttons.c
- *
- *  Created on: 7 may. 2019
- *      Author: Jordi
- */
-
 // ------------------------------------- INCLUDES -------------------------------------
 #include "msp430.h"
 #include <stdint.h>

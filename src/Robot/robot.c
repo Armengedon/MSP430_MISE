@@ -1,10 +1,3 @@
-/*
- * robot.c
- *
- *  Created on: 15 may. 2019
- *      Author: Jordi
- */
-
 // ------------------------------------- INCLUDES -------------------------------------
 
 #include "msp430.h"
@@ -63,6 +56,12 @@ void robot_calibADC(void);
 void robot_manualOp(void);
 
 /**
+ * Enter the measure distance function, In this option we can use the robot to measure the distance in cm to the objects that are in
+ * front of it.
+ */
+void robot_measDist(void);
+
+/**
  * Decides which menu to go depending on the last button pressed and the actual menu we are in
  */
 void robot_changeMenu(void);
@@ -74,10 +73,9 @@ void robot_measDist(void) {
 
     while (BTN_CNL != btn_prsd) {
         wdg_restart();
-//        wait_ms(30);
         lcd_clearDisplay();
 
-        wait_ms(5);//If this is removed instead of LDR.... the lcd shows LR....
+        wait_ms(5);
 
         sprintf((char *) buffer, "@Distance=  %dcm", (uint16_t) hcsr04_readDistance());  //prepare char pointer to send to the lcd
 
@@ -99,12 +97,11 @@ void robot_calibADC(void) {
 
     while (BTN_CNL != btn_prsd) {
         wdg_restart();
-//        wait_ms(30);
         lcd_clearDisplay();
 
         sprintf((char *) buffer, "@LDR LEFT  %dV", (uint16_t) ldrs_readVoltage(LDR_LFT));  //prepare char pointer to send to the lcd
 
-        wait_ms(5);//If this is removed instead of LDR.... the lcd shows LR....
+        wait_ms(5);
 
         lcd_sendLine(buffer);
         lcd_2ndLineShift();
@@ -223,15 +220,18 @@ void robot_seekLight(void) {
         sprintf((char *) buffer, "@THOLD:  %d", (uint16_t) lightDiffTHD);  //prepare char pointer to send to the lcd
         lcd_sendLine(buffer);
 
+        /* User can select with the joystick the threshold difference from the two light sensors */
         if (BTN_JTK_UP == btn_prsd) {
             if (lightDiffTHD != 400) lightDiffTHD += 20;
         } else if (BTN_JTK_DWN == btn_prsd){
             if (lightDiffTHD != 20) lightDiffTHD -= 20;
         }
 
+        /* Start reading both sensors */
         leftLight = ldrs_readVoltage(LDR_LFT);
         rightLight = ldrs_readVoltage(LDR_RGT);
 
+        /*Compare values*/
         lightDiff = leftLight - rightLight;
 
         robot_motorDecision(lightDiffTHD, lightDiff);
@@ -239,6 +239,7 @@ void robot_seekLight(void) {
         btn_prsd = buttons_lastPressed();
     }
 
+    /*Stop motors */
     AX12_motorControl(AX12_BROADCAST, AX12_LFT_FORWARD, AX12_SPD_STP);
     robot_mainMenu();
 }
@@ -355,6 +356,8 @@ void robot_showMenu(menuSelection_t selection) {
 
 void robot_init(void) {
     /* init modules */
+    wdg_stop();
+
     ucs_cfg_init();
     timers_init();
     buttons_init();

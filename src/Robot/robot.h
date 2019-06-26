@@ -1,10 +1,3 @@
-/*
- * robot.h
- *
- *  Created on: 15 may. 2019
- *      Author: Jordi
- */
-
 #ifndef SRC_ROBOT_ROBOT_H_
 #define SRC_ROBOT_ROBOT_H_
 
@@ -15,6 +8,10 @@
 // ------------------------------------- DEFINES --------------------------------------
 
 // ------------------------------------- TYPEDEFS -------------------------------------
+
+/**
+ * Menu types
+ */
 typedef enum {
     MENU_CALIB_LDRS = 0,
     MENU_SEEK_LIGHT,
@@ -24,8 +21,14 @@ typedef enum {
 
 // ----------------------------------- PUBLIC METHODS ---------------------------------
 
+/**
+ * When calling this, the robot will the menu passed in the argument of type menuSelection_t
+ */
 void robot_showMenu(menuSelection_t selection);
 
+/**
+ * The robot displays the main menu and waits for actions from the user
+ */
 void robot_mainMenu(void);
 
 /**
